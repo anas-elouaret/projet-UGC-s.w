@@ -1,29 +1,66 @@
+import { useLayoutEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
+
 const collageItems = [
   {
     name: "@yasmine",
-    image:
-      "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=900&q=80",
+    video:
+      "https://cdn.coverr.co/videos/coverr-smiling-woman-using-a-phone-1577/1080p.mp4",
   },
   {
     name: "@anas_b",
-    image:
-      "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=900&q=80",
+    video:
+      "https://cdn.coverr.co/videos/coverr-aerial-view-of-a-futuristic-city-at-night-1579/1080p.mp4",
   },
   {
     name: "@mehdi",
-    image:
-      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=900&q=80",
+    video:
+      "https://cdn.coverr.co/videos/coverr-thinking-man-in-office-1576/1080p.mp4",
   },
   {
     name: "@sara",
-    image:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=900&q=80",
+    video:
+      "https://cdn.coverr.co/videos/coverr-girl-walking-on-the-street-1571/1080p.mp4",
   },
 ];
 
 export default function HeroSection({ loading }) {
+  const sectionRef = useRef(null);
+  const cardRefs = useRef([]);
+
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      const cards = cardRefs.current.filter(Boolean);
+      if (!cards.length || !sectionRef.current) {
+        return;
+      }
+
+      const offsets = [-70, -120, -50, -95];
+      cards.forEach((card, index) => {
+        gsap.to(card, {
+          y: offsets[index] ?? -70,
+          ease: "none",
+          force3D: true,
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 0.8,
+          },
+        });
+      });
+    }, sectionRef);
+
+    return () => {
+      ctx.revert();
+    };
+  }, []);
+
   return (
-    <section id="home" className="mx-auto w-full max-w-400 px-4 pb-20 pt-8 sm:px-6 lg:px-8 lg:pt-12">
+    <section ref={sectionRef} id="home" className="mx-auto w-full max-w-400 px-4 pb-20 pt-8 sm:px-6 lg:px-8 lg:pt-12">
       <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]">
         <div className="js-reveal max-w-2xl">
           <div className="flex flex-wrap items-center gap-2">
@@ -62,9 +99,21 @@ export default function HeroSection({ loading }) {
           {collageItems.map((item, index) => (
             <article
               key={item.name}
+              ref={(node) => {
+                cardRefs.current[index] = node;
+              }}
               className={`creato-card bg-[#121212] ${index % 2 === 1 ? "mt-4 sm:mt-6" : ""}`}
             >
-              <img src={item.image} alt={item.name} className="creato-card-image" loading="lazy" />
+              <video
+                className="creato-card-video"
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+              >
+                <source src={item.video} type="video/mp4" />
+              </video>
               <p className="creato-card-user">{item.name}</p>
             </article>
           ))}
