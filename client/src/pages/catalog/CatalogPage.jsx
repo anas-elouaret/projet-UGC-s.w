@@ -1,28 +1,20 @@
-import { useEffect, useState } from "react";
-import Navbar from "../../components/home/Navbar";
+import HybridNavbar from "../../components/hybrid/HybridNavbar";
 import CreatorCatalogSection from "../../components/home/CreatorCatalogSection";
-import FooterSection from "../../components/home/FooterSection";
 
 export default function CatalogPage() {
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setIsScrolled(window.scrollY > 24);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  // Scroll to top on page mount
-  useEffect(() => { window.scrollTo(0, 0); }, []);
-
   return (
-    <main className="min-h-screen bg-white text-[#141414]">
-      <Navbar isScrolled={isScrolled} />
-      <div className="pt-20">
+    <main className="min-h-screen bg-[#070707] text-white">
+      <HybridNavbar />
+      <section className="mx-auto max-w-7xl px-4 pb-6 pt-12 sm:px-6 lg:px-8">
+        <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#7CFF5B]">Marketplace</p>
+        <h1 className="mt-4 text-4xl font-black sm:text-5xl">Find vetted creators by niche, pricing, and rating.</h1>
+        <p className="mt-3 max-w-2xl text-zinc-300">
+          Book creators directly or request a managed assignment through the Done-For-You flow.
+        </p>
+      </section>
+      <div className="pb-12">
         <CreatorCatalogSection />
       </div>
-      <FooterSection />
     </main>
   );
 }

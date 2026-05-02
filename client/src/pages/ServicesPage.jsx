@@ -1,49 +1,38 @@
-import Footer from "../components/layout/Footer";
-import Navbar from "../components/layout/Navbar";
-import SectionHeading from "../components/common/SectionHeading";
-import ServiceCard from "../components/services/ServiceCard";
-
-const services = [
-  {
-    title: "Web Development",
-    description: "Custom websites built for speed, accessibility, and elegant conversion flows.",
-    iconPath: "M4 7h16M4 12h16M4 17h16",
-  },
-  {
-    title: "Branding",
-    description: "Meaningful visual systems, messaging, and identity that position your brand to lead.",
-    iconPath: "M12 3l7 4.2v7.6L12 21 5 14.8V6.2L12 3z",
-  },
-  {
-    title: "Content Creation",
-    description: "UGC and campaign creative that feels modern, authentic, and built for social attention.",
-    iconPath: "M5 3v18l15-9L5 3z",
-  },
-  {
-    title: "Social Media Marketing",
-    description: "Strategy, paid, and organic campaigns that help brands grow with intentional storytelling.",
-    iconPath: "M12 8v8m-4-4h8",
-  },
-];
+import { Link } from "react-router-dom";
+import HybridNavbar from "../components/hybrid/HybridNavbar";
+import { serviceItems } from "../components/hybrid/hybridData";
 
 export default function ServicesPage() {
   return (
-    <div className="min-h-screen bg-[#05030d] text-white">
-      <Navbar />
-      <main className="px-4 py-20 sm:px-6 lg:px-8">
-        <SectionHeading
-          pretitle="Services"
-          title="Strategy, design, and content for modern brands."
-          description="We combine digital craftsmanship with brand thinking to build work that feels premium and performs."
-        />
+    <main className="min-h-screen bg-[#050505] text-white">
+      <HybridNavbar />
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+        <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#7CFF5B]">Services</p>
+        <h1 className="mt-4 max-w-3xl text-4xl font-black tracking-tight sm:text-5xl">Agency-grade services with marketplace speed.</h1>
+        <p className="mt-4 max-w-2xl text-sm leading-relaxed text-zinc-300 sm:text-base">
+          Choose the exact support your brand needs, then launch with transparent scope, timelines, and progress tracking.
+        </p>
 
-        <div className="mx-auto mt-16 grid gap-6 lg:grid-cols-2">
-          {services.map((service) => (
-            <ServiceCard key={service.title} {...service} />
+        <div className="mt-10 grid gap-5 md:grid-cols-2">
+          {serviceItems.map((service) => (
+            <article key={service.title} className="rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.08] to-white/[0.03] p-7 shadow-[0_10px_30px_rgba(0,0,0,0.25)]">
+              <h2 className="text-2xl font-bold tracking-tight">{service.title}</h2>
+              <p className="mt-3 text-sm leading-relaxed text-zinc-300">{service.description}</p>
+              <ul className="mt-5 space-y-2 text-sm text-zinc-200">
+                {service.benefits.map((benefit) => (
+                  <li key={benefit}>- {benefit}</li>
+                ))}
+              </ul>
+              <Link
+                to="/start-project"
+                className="mt-7 inline-flex rounded-full bg-[#7CFF5B] px-6 py-2.5 text-sm font-bold text-[#061207] transition hover:-translate-y-0.5"
+              >
+                Start project
+              </Link>
+            </article>
           ))}
         </div>
-      </main>
-      <Footer />
-    </div>
+      </section>
+    </main>
   );
 }
