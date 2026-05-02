@@ -1,7 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
 import HybridNavbar from "../../components/hybrid/HybridNavbar";
+import PremiumHeroBackground from "../../components/common/PremiumHeroBackground";
 import { creatorHighlights, packageItems } from "../../components/hybrid/hybridData";
 import { useLanguage } from "../../context/LanguageContext";
+import { formatMAD } from "../../utils/currency";
 
 export default function HomePage() {
   const { t } = useLanguage();
@@ -12,8 +14,9 @@ export default function HomePage() {
       <HybridNavbar />
 
       <section className="relative overflow-hidden border-b border-white/10">
+        <PremiumHeroBackground />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,rgba(124,255,91,0.16),transparent_32%),radial-gradient(circle_at_85%_10%,rgba(255,255,255,0.08),transparent_28%)]" />
-        <div className="mx-auto max-w-7xl px-4 pb-24 pt-24 sm:px-6 lg:px-8">
+        <div className="relative z-10 mx-auto max-w-7xl px-4 pb-24 pt-24 sm:px-6 lg:px-8">
           <p className="inline-flex rounded-full border border-[#7CFF5B]/35 bg-[#7CFF5B]/10 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.22em] text-[#7CFF5B]">
             {tx("hybridBadge", "Hybrid Growth Platform")}
           </p>
@@ -138,7 +141,7 @@ export default function HomePage() {
               <p className="mt-1 text-sm text-zinc-300">{creator.niche}</p>
               <div className="mt-6 flex items-center justify-between text-sm">
                 <span className="text-zinc-300">Rating {creator.rating}</span>
-                <span className="font-bold">{creator.startingAt}</span>
+                <span className="font-bold">{formatMAD(creator.startingAt)}</span>
               </div>
               <button
                 type="button"
@@ -161,7 +164,7 @@ export default function HomePage() {
           {packageItems.map((pack) => (
             <div key={pack.name} className="rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.09] to-white/[0.03] p-6">
               <p className="text-lg font-bold tracking-tight">{pack.name}</p>
-              <p className="mt-2 text-4xl font-black tracking-tight">{pack.price}</p>
+              <p className="mt-2 text-4xl font-black tracking-tight">{formatMAD(pack.priceNum)}</p>
               <ul className="mt-5 space-y-2 text-sm text-zinc-300">
                 {pack.features.slice(0, 3).map((feature) => <li key={feature}>- {feature}</li>)}
               </ul>

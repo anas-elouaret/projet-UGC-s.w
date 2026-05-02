@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import HybridNavbar from "../components/hybrid/HybridNavbar";
 import { serviceItems } from "../components/hybrid/hybridData";
 import AddToCartButton from "../components/cart/AddToCartButton";
+import { formatMAD } from "../utils/currency";
 
 export default function ServicesPage() {
   return (
@@ -20,7 +21,7 @@ export default function ServicesPage() {
               <div className="flex items-start justify-between">
                 <h2 className="text-2xl font-bold tracking-tight">{service.title}</h2>
                 <div className="text-right">
-                  <p className="text-2xl font-bold text-[#7CFF5B]">${service.price}</p>
+                  <p className="text-2xl font-bold text-[#7CFF5B]">{formatMAD(service.price)}</p>
                   <p className="text-xs text-zinc-400">One-time</p>
                 </div>
               </div>

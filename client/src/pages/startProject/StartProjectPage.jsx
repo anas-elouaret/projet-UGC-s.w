@@ -1,10 +1,13 @@
 import { useState } from "react";
+import { useLanguage } from "../../context/LanguageContext";
 import HybridNavbar from "../../components/hybrid/HybridNavbar";
 
 const serviceOptions = ["UGC Content", "Photography", "Website Development", "Web Application", "Printing"];
 
 export default function StartProjectPage() {
   const [service, setService] = useState(serviceOptions[0]);
+
+  const { t } = useLanguage();
 
   return (
     <main className="min-h-screen bg-[#070707] text-white">
@@ -41,7 +44,7 @@ export default function StartProjectPage() {
             <span className="text-sm font-semibold">Budget range</span>
             <input
               type="text"
-              placeholder="e.g. $1,000 - $2,000"
+              placeholder={t.budgetRangePh}
               className="mt-2 w-full rounded-xl border border-white/10 bg-[#0f0f0f] px-4 py-3 text-sm outline-none"
             />
           </label>

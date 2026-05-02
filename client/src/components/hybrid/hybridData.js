@@ -40,21 +40,18 @@ export const packageItems = [
   {
     id: "ugc-starter",
     name: "UGC Starter Pack",
-    price: "$599",
     priceNum: 599,
     features: ["5 UGC videos", "Basic script support", "1 revision cycle", "Delivery in 7 days"],
   },
   {
     id: "growth-pack",
     name: "Business Growth Pack",
-    price: "$1,499",
     priceNum: 1499,
     features: ["12 UGC videos", "Landing page setup", "Monthly analytics report", "Priority creator assignment"],
   },
   {
     id: "premium-pack",
     name: "Premium Brand Pack",
-    price: "$3,200",
     priceNum: 3200,
     features: ["UGC + photo campaign", "Custom website section", "Print-ready brand assets", "Dedicated project manager"],
   },
@@ -68,7 +65,7 @@ export const printingItems = [
 ];
 
 export const creatorHighlights = [
-  { name: "Sara M.", niche: "Beauty & Lifestyle", rating: "4.9", startingAt: "$120" },
-  { name: "Anas T.", niche: "Tech & SaaS", rating: "4.8", startingAt: "$150" },
-  { name: "Nour K.", niche: "Food & Hospitality", rating: "4.9", startingAt: "$110" },
+  { name: "Sara M.", niche: "Beauty & Lifestyle", rating: "4.9", startingAt: 120 },
+  { name: "Anas T.", niche: "Tech & SaaS", rating: "4.8", startingAt: 150 },
+  { name: "Nour K.", niche: "Food & Hospitality", rating: "4.9", startingAt: 110 },
 ];

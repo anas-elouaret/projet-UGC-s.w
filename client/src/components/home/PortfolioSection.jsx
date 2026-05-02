@@ -1,13 +1,14 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useLanguage } from "../../context/LanguageContext";
+import { formatMAD } from "../../utils/currency";
 
 const creators = [
-  { name: "Yasmine T.", category: "Lifestyle", handle: "@yasmine_creates", price: "890",
+  { name: "Yasmine T.", category: "Lifestyle", handle: "@yasmine_creates", price: 890,
     image: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1200&q=80" },
-  { name: "Mehdi R.", category: "Tech", handle: "@mehdi.tech", price: "1,200",
+  { name: "Mehdi R.", category: "Tech", handle: "@mehdi.tech", price: 1200,
     image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=1200&q=80" },
-  { name: "Sara L.", category: "Health & Beauty", handle: "@sara_wellness", price: "750",
+  { name: "Sara L.", category: "Health & Beauty", handle: "@sara_wellness", price: 750,
     image: "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=1200&q=80" },
 ];
 
@@ -46,7 +47,7 @@ export default function PortfolioSection() {
             <img src={creator.image} alt={creator.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
             <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-50 group-hover:opacity-70 transition-opacity duration-500" />
             <div className="absolute top-6 right-6 bg-[#d1ff00] text-black font-black text-[11px] px-4 py-2 rounded-2xl tracking-widest uppercase shadow-lg">
-              {creator.price} MAD
+              {formatMAD(creator.price)}
             </div>
             <div className="absolute top-6 left-6 bg-black/40 backdrop-blur-md border border-white/10 text-white font-black text-[10px] px-4 py-2 rounded-2xl tracking-widest uppercase">
               {creator.category}

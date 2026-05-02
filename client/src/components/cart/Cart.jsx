@@ -1,5 +1,6 @@
 import { X } from "lucide-react";
 import { useCart } from "../../context/CartContext";
+import { formatMAD } from "../../utils/currency";
 import { useState } from "react";
 
 export default function Cart() {
@@ -94,7 +95,7 @@ export default function Cart() {
                     <div style={{ flex: 1 }}>
                       <h3 style={{ fontWeight: "600", color: "white" }}>{item.name}</h3>
                       <p style={{ marginTop: "0.25rem", fontSize: "0.875rem", color: "rgb(161, 140, 116)" }}>
-                        ${typeof item.price === "string" ? item.price.replace("$", "") : item.price}
+                        {formatMAD(item.price)}
                       </p>
                       {item.quantity && item.quantity > 1 && (
                         <p style={{ marginTop: "0.25rem", fontSize: "0.75rem", color: "rgb(113, 113, 122)" }}>Qty: {item.quantity}</p>
@@ -120,7 +121,7 @@ export default function Cart() {
           {cartItems.length > 0 && (
             <div style={{ display: "flex", justifyContent: "space-between", borderTop: "1px solid rgba(255, 255, 255, 0.1)", paddingTop: "1rem" }}>
               <span style={{ fontSize: "1.125rem", fontWeight: "600", color: "white" }}>Total:</span>
-              <span style={{ fontSize: "1.5rem", fontWeight: "bold", color: "#7CFF5B" }}>${getTotalPrice().toFixed(2)}</span>
+              <span style={{ fontSize: "1.5rem", fontWeight: "bold", color: "#7CFF5B" }}>{formatMAD(getTotalPrice())}</span>
             </div>
           )}
 

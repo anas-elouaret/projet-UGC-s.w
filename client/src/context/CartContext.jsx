@@ -30,9 +30,7 @@ export function CartProvider({ children }) {
 
   const getTotalPrice = () => {
     return cartItems.reduce((total, item) => {
-      const price = typeof item.price === "string"
-        ? parseFloat(item.price.replace("$", ""))
-        : item.price;
+      const price = Number(item.price) || 0;
       return total + price * (item.quantity || 1);
     }, 0);
   };

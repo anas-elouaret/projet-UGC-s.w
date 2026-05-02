@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import HybridNavbar from "../../components/hybrid/HybridNavbar";
 import { packageItems } from "../../components/hybrid/hybridData";
 import AddToCartButton from "../../components/cart/AddToCartButton";
+import { formatMAD } from "../../utils/currency";
 
 export default function PackagesPage() {
   return (
@@ -17,7 +18,7 @@ export default function PackagesPage() {
           {packageItems.map((pack) => (
             <article key={pack.id} className="rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.09] to-white/[0.03] p-7">
               <h2 className="text-xl font-bold tracking-tight">{pack.name}</h2>
-              <p className="mt-3 text-4xl font-black tracking-tight">{pack.price}</p>
+              <p className="mt-3 text-4xl font-black tracking-tight">{formatMAD(pack.priceNum)}</p>
               <ul className="mt-5 space-y-2 text-sm text-zinc-300">
                 {pack.features.map((feature) => (
                   <li key={feature}>- {feature}</li>
