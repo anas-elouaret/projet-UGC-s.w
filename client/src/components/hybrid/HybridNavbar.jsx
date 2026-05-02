@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { useLanguage } from "../../context/LanguageContext";
+import CartIcon from "../cart/CartIcon";
 
 const navItems = [
   { key: "home", fallback: "Home", to: "/" },
@@ -51,6 +52,7 @@ export default function HybridNavbar() {
               <option value="en" className="bg-[#0e0e0e]">English</option>
             </select>
           </label>
+          <CartIcon />
           <Link
             to="/dashboard/client"
             className="hidden rounded-full border border-white/20 bg-white/[0.02] px-4 py-2 text-sm font-semibold text-white transition hover:border-white/40 hover:bg-white/[0.05] sm:block"

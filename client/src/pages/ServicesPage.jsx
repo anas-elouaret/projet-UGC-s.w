@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import HybridNavbar from "../components/hybrid/HybridNavbar";
 import { serviceItems } from "../components/hybrid/hybridData";
+import AddToCartButton from "../components/cart/AddToCartButton";
 
 export default function ServicesPage() {
   return (
@@ -15,20 +16,35 @@ export default function ServicesPage() {
 
         <div className="mt-10 grid gap-5 md:grid-cols-2">
           {serviceItems.map((service) => (
-            <article key={service.title} className="rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.08] to-white/[0.03] p-7 shadow-[0_10px_30px_rgba(0,0,0,0.25)]">
-              <h2 className="text-2xl font-bold tracking-tight">{service.title}</h2>
+            <article key={service.id} className="rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.08] to-white/[0.03] p-7 shadow-[0_10px_30px_rgba(0,0,0,0.25)]">
+              <div className="flex items-start justify-between">
+                <h2 className="text-2xl font-bold tracking-tight">{service.title}</h2>
+                <div className="text-right">
+                  <p className="text-2xl font-bold text-[#7CFF5B]">${service.price}</p>
+                  <p className="text-xs text-zinc-400">One-time</p>
+                </div>
+              </div>
               <p className="mt-3 text-sm leading-relaxed text-zinc-300">{service.description}</p>
               <ul className="mt-5 space-y-2 text-sm text-zinc-200">
                 {service.benefits.map((benefit) => (
                   <li key={benefit}>- {benefit}</li>
                 ))}
               </ul>
-              <Link
-                to="/start-project"
-                className="mt-7 inline-flex rounded-full bg-[#7CFF5B] px-6 py-2.5 text-sm font-bold text-[#061207] transition hover:-translate-y-0.5"
-              >
-                Start project
-              </Link>
+              <div className="mt-7 flex gap-3">
+                <AddToCartButton 
+                  item={{
+                    id: service.id,
+                    name: service.title,
+                    price: service.price,
+                  }}
+                />
+                <Link
+                  to="/start-project"
+                  className="rounded-full border border-white/20 bg-white/[0.02] px-6 py-2.5 text-sm font-bold text-white transition hover:bg-white/[0.05]"
+                >
+                  Details
+                </Link>
+              </div>
             </article>
           ))}
         </div>

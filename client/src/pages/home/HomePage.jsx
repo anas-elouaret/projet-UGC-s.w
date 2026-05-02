@@ -17,19 +17,74 @@ export default function HomePage() {
           <p className="inline-flex rounded-full border border-[#7CFF5B]/35 bg-[#7CFF5B]/10 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.22em] text-[#7CFF5B]">
             {tx("hybridBadge", "Hybrid Growth Platform")}
           </p>
-          <h1 className="mt-7 max-w-5xl text-4xl font-black leading-[1.02] tracking-[-0.03em] sm:text-6xl lg:text-7xl">
-            {tx("hybridHeroTitle", "One platform for business growth: creators, digital services, and print production in one workflow.")}
-          </h1>
-          <p className="mt-6 max-w-3xl text-base leading-relaxed text-zinc-300 sm:text-lg">
-            {tx("hybridHeroSub", "Launch campaigns faster with a model that combines a creator marketplace, digital agency execution, and a streamlined project system.")}
-          </p>
-          <div className="mt-10 flex flex-wrap gap-3">
-            <Link to="/start-project" className="rounded-full bg-[#7CFF5B] px-7 py-3 text-sm font-black text-[#061207] shadow-[0_12px_40px_rgba(124,255,91,0.24)] transition hover:-translate-y-0.5">
-              {tx("startProject", "Start a project")}
-            </Link>
-            <Link to="/marketplace" className="rounded-full border border-white/20 bg-white/[0.02] px-7 py-3 text-sm font-semibold text-white transition hover:bg-white/[0.05]">
-              {tx("browseCreators", "Browse creators")}
-            </Link>
+          <div className="mt-10 grid gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:items-end">
+            <div className="max-w-2xl">
+              <h1 className="text-4xl font-black leading-[1.02] tracking-[-0.03em] sm:text-6xl lg:text-7xl">
+                {tx("hybridHeroTitle", "One platform for business growth: creators, digital services, and print production in one workflow.")}
+              </h1>
+              <p className="mt-6 max-w-3xl text-base leading-relaxed text-zinc-300 sm:text-lg">
+                {tx("hybridHeroSub", "Launch campaigns faster with a model that combines a creator marketplace, digital agency execution, and a streamlined project system.")}
+              </p>
+              <div className="mt-10 flex flex-wrap gap-3">
+                <Link to="/start-project" className="rounded-full bg-[#7CFF5B] px-7 py-3 text-sm font-black text-[#061207] shadow-[0_12px_40px_rgba(124,255,91,0.24)] transition hover:-translate-y-0.5">
+                  {tx("startProject", "Start a project")}
+                </Link>
+                <Link to="/marketplace" className="rounded-full border border-white/20 bg-white/[0.02] px-7 py-3 text-sm font-semibold text-white transition hover:bg-white/[0.05]">
+                  {tx("browseCreators", "Browse creators")}
+                </Link>
+              </div>
+            </div>
+
+            <div className="relative">
+              <div className="hero-scene">
+                <div className="scene-canvas">
+                  <div className="scene-orbit" aria-hidden="true">
+                    <div className="scene-item scene-laptop" style={{ transform: "translate3d(0,-4rem,0) rotateX(14deg) rotateY(-6deg)" }}>
+                      <div className="scene-laptop-screen">
+                        <div className="scene-screen-top">
+                          <span className="scene-dot scene-dot--green" />
+                          <span className="scene-dot scene-dot--yellow" />
+                          <span className="scene-dot scene-dot--red" />
+                        </div>
+                        <div className="scene-screen-content">
+                          <div className="scene-bar" />
+                          <div className="scene-panel" />
+                          <div className="scene-row">
+                            <div className="scene-chip scene-chip--accent" />
+                            <div className="scene-chip scene-chip--muted" />
+                          </div>
+                          <div className="scene-row scene-row--dense">
+                            <div className="scene-block" />
+                            <div className="scene-block scene-block--short" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="scene-item scene-camera" style={{ transform: "translate3d(10rem,-3rem,0) rotateX(28deg) rotateY(20deg)" }}>
+                      <div className="scene-camera-lens" />
+                      <div className="scene-camera-strip" />
+                    </div>
+
+                    <div className="scene-item scene-box" style={{ transform: "translate3d(-9rem,3.5rem,0) rotateX(12deg) rotateY(-24deg)" }}>
+                      <div className="scene-box-edge" />
+                      <div className="scene-box-label">PRINT</div>
+                    </div>
+
+                    <div className="scene-item scene-frame" style={{ transform: "translate3d(5rem,4rem,0) rotateX(8deg) rotateY(12deg)" }}>
+                      <div className="scene-frame-screen">
+                        <div className="scene-frame-play" />
+                        <div className="scene-frame-tags">
+                          <span>UGC</span>
+                          <span>Studio</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="scene-glow" />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
