@@ -5,6 +5,7 @@ import { useLanguage } from "../../context/LanguageContext";
 import ClientRegistrationForm from "../../components/common/ClientRegistrationForm";
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { HoverGlow } from "../../components/animations";
 
 export default function HomePage() {
   const { t } = useLanguage();
@@ -30,43 +31,30 @@ export default function HomePage() {
                 {tx("hybridHeroSub", "Launch campaigns faster with a model that combines a creator marketplace, digital agency execution, and a streamlined project system.")}
               </p>
               <div className="mt-10 flex flex-wrap gap-3">
-                <motion.div
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  whileTap={{ scale: 0.98 }}
-                  transition={{ duration: 0.2 }}
-                >
+                <HoverGlow glowColor="rgba(124, 255, 91, 0.4)">
                   <Link
                     to="/start-project"
                     className="inline-block rounded-full bg-[#7CFF5B] px-7 py-3 text-sm font-black text-[#061207] shadow-[0_12px_40px_rgba(124,255,91,0.24)] transition-all duration-300 hover:shadow-[0_16px_50px_rgba(124,255,91,0.4)]"
                   >
                     {tx("startProject", "Start a project")}
                   </Link>
-                </motion.div>
-                <motion.div
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  whileTap={{ scale: 0.98 }}
-                  transition={{ duration: 0.2 }}
-                >
+                </HoverGlow>
+                <HoverGlow glowColor="rgba(255, 255, 255, 0.1)">
                   <Link
                     to="/marketplace"
                     className="inline-block rounded-full border border-white/20 bg-white/[0.02] px-7 py-3 text-sm font-semibold text-white transition-all duration-300 hover:bg-white/[0.08] hover:border-white/40 hover:shadow-[0_0_20px_rgba(255,255,255,0.1)]"
                   >
                     {tx("browseCreators", "Browse creators")}
                   </Link>
-                </motion.div>
-                <motion.button
-                  onClick={() => setShowRegistrationForm(true)}
-                  whileHover={{
-                    scale: 1.05,
-                    y: -2,
-                    boxShadow: "0 0 25px rgba(139, 92, 246, 0.3)"
-                  }}
-                  whileTap={{ scale: 0.98 }}
-                  transition={{ duration: 0.2 }}
-                  className="rounded-full border border-purple-500/50 bg-gradient-to-r from-purple-600/20 to-purple-800/20 px-7 py-3 text-sm font-semibold text-purple-300 transition-all duration-300 hover:from-purple-600/30 hover:to-purple-800/30 hover:border-purple-400/70 hover:text-purple-200"
-                >
-                  Join as Client
-                </motion.button>
+                </HoverGlow>
+                <HoverGlow glowColor="rgba(139, 92, 246, 0.3)">
+                  <button
+                    onClick={() => setShowRegistrationForm(true)}
+                    className="rounded-full border border-purple-500/50 bg-gradient-to-r from-purple-600/20 to-purple-800/20 px-7 py-3 text-sm font-semibold text-purple-300 transition-all duration-300 hover:from-purple-600/30 hover:to-purple-800/30 hover:border-purple-400/70 hover:text-purple-200"
+                  >
+                    Join as Client
+                  </button>
+                </HoverGlow>
               </div>
             </div>
 

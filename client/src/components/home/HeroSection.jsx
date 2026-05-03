@@ -1,6 +1,8 @@
 import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { motion } from "framer-motion";
+import { ScrollReveal, StaggerContainer, HoverGlow, Parallax, TextReveal } from "../animations";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -60,64 +62,79 @@ export default function HeroSection({ loading }) {
   }, []);
 
   return (
-    <section ref={sectionRef} id="home" className="mx-auto w-full max-w-400 px-4 pb-20 pt-8 sm:px-6 lg:px-8 lg:pt-12">
-      <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]">
-        <div className="js-reveal max-w-2xl">
+    <section ref={sectionRef} id="home" className="relative mx-auto w-full max-w-400 px-4 pb-20 pt-8 sm:px-6 lg:px-8 lg:pt-12 overflow-hidden">
+      {/* Background glow */}
+      <motion.div
+        className="absolute inset-0 bg-gradient-radial from-purple-500/10 via-transparent to-transparent"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 2, delay: 0.5 }}
+      />
+
+      <div className="relative grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]">
+        <ScrollReveal className="js-reveal max-w-2xl">
           <div className="flex flex-wrap items-center gap-2">
             <span className="creato-chip">Escrow Protected</span>
             <span className="creato-chip">Fast Delivery</span>
           </div>
 
-          <h1 className="mt-8 text-[clamp(2.5rem,6.4vw,5.3rem)] font-extrabold leading-[0.95] tracking-[-0.03em] text-[#121212]">
-            Find the Best
-            <br />
-            <span className="creato-highlight">UGC Creators</span> For
-            <br />
-            your business.
-          </h1>
+          <ScrollReveal delay={0.1}>
+            <h1 className="mt-8 text-[clamp(2.5rem,6.4vw,5.3rem)] font-extrabold leading-[0.95] tracking-[-0.03em] text-[#121212]">
+              Find the Best
+              <br />
+              <span className="creato-highlight">UGC Creators</span> For
+              <br />
+              your business.
+            </h1>
+          </ScrollReveal>
 
-          <p className="mt-6 max-w-xl text-base leading-relaxed text-[#5f5f5f]">
+          <ScrollReveal delay={0.3} className="mt-6 max-w-xl text-base leading-relaxed text-[#5f5f5f]">
             Connect with verified Moroccan creators. Secure payments via escrow.
             Performance-focused UGC delivered in days, not weeks.
-          </p>
+          </ScrollReveal>
 
-          <button
-            type="button"
-            className="creato-cta mt-10 rounded-full px-8 py-4 text-sm font-semibold uppercase tracking-[0.08em]"
-            disabled={loading}
-          >
-            View All Creators
-          </button>
+          <HoverGlow className="mt-10">
+            <button
+              type="button"
+              className="creato-cta rounded-full px-8 py-4 text-sm font-semibold uppercase tracking-[0.08em]"
+              disabled={loading}
+            >
+              View All Creators
+            </button>
+          </HoverGlow>
 
           <div className="mt-5 flex flex-wrap items-center gap-2">
             <span className="creato-subchip">Secure Payments</span>
             <span className="creato-subchip">Fast Delivery</span>
           </div>
-        </div>
+        </ScrollReveal>
 
-        <div className="js-reveal grid grid-cols-2 gap-4">
-          {collageItems.map((item, index) => (
-            <article
-              key={item.name}
-              ref={(node) => {
-                cardRefs.current[index] = node;
-              }}
-              className={`creato-card bg-[#121212] ${index % 2 === 1 ? "mt-4 sm:mt-6" : ""}`}
-            >
-              <video
-                className="creato-card-video"
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="metadata"
-              >
-                <source src={item.video} type="video/mp4" />
-              </video>
-              <p className="creato-card-user">{item.name}</p>
-            </article>
-          ))}
-        </div>
+        <Parallax speed={0.3} className="js-reveal grid grid-cols-2 gap-4">
+          <StaggerContainer staggerDelay={0.2}>
+            {collageItems.map((item, index) => (
+              <HoverGlow key={item.name} scale={1.02}>
+                <article
+                  ref={(node) => {
+                    cardRefs.current[index] = node;
+                  }}
+                  className={`creato-card bg-[#121212] ${index % 2 === 1 ? "mt-4 sm:mt-6" : ""}`}
+                >
+                  <video
+                    className="creato-card-video"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="metadata"
+                  >
+                    <source src={item.video} type="video/mp4" />
+                  </video>
+                  <p className="creato-card-user">{item.name}</p>
+                </article>
+              </HoverGlow>
+            ))}
+          </StaggerContainer>
+        </Parallax>
       </div>
     </section>
   );

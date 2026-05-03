@@ -1,7 +1,7 @@
 import { X, Edit2 } from "lucide-react";
 import { useCart } from "../../context/CartContext";
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import ServiceDetailModal from "../services/ServiceDetailModal";
 import { servicesData } from "../../data/servicesData";
 
@@ -65,129 +65,110 @@ export default function Cart() {
     }, 300);
   };
 
-  const overlayStyle = {
-    position: "fixed",
-    inset: 0,
-    zIndex: 40,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-  };
-
-  const asideStyle = {
-    position: "fixed",
-    right: 0,
-    top: 0,
-    zIndex: 50,
-    height: "100%",
-    width: "100%",
-    maxWidth: "28rem",
-    backgroundColor: "rgb(10, 10, 15)",
-    boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1)",
-    display: "flex",
-    flexDirection: "column",
-  };
-
   if (!isCartOpen) {
     return null;
   }
 
   return (
-    <>
-      <div style={overlayStyle} onClick={() => setIsCartOpen(false)} />
-      <aside style={asideStyle}>
+    <div>
+      {/* Overlay */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onClick={() => setIsCartOpen(false)}
+        className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm"
+      />
+
+      {/* Sidebar */}
+      <motion.aside
+        initial={{ x: 300 }}
+        animate={{ x: 0 }}
+        exit={{ x: 300 }}
+        transition={{ type: "spring", damping: 20 }}
+        className="fixed right-0 top-0 z-50 h-screen w-full max-w-sm bg-gradient-to-b from-slate-950 via-slate-900 to-black flex flex-col shadow-2xl"
+      >
         {/* Header */}
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid rgba(255, 255, 255, 0.1)", padding: "1.5rem" }}>
-          <h2 style={{ fontSize: "1.25rem", fontWeight: "bold", color: "white" }}>Shopping Cart</h2>
-          <button onClick={() => setIsCartOpen(false)} style={{ color: "rgb(161, 140, 116)", cursor: "pointer" }}>
+        <div className="flex items-center justify-between border-b border-purple-500/20 px-6 py-4 backdrop-blur">
+          <h2 className="text-xl font-bold text-white">Shopping Cart</h2>
+          <motion.button
+            whileHover={{ scale: 1.1, rotate: 90 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => setIsCartOpen(false)}
+            className="rounded-full p-2 hover:bg-purple-500/10 transition-colors text-gray-400 hover:text-white"
+          >
             <X size={24} />
-          </button>
+          </motion.button>
         </div>
 
         {/* Items */}
-        <div style={{ flex: 1, overflowY: "auto", padding: "1rem 1.5rem" }}>
+        <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
           {cartItems.length === 0 ? (
-            <p style={{ textAlign: "center", color: "rgb(161, 140, 116)" }}>Your cart is empty</p>
+            <div className="flex items-center justify-center h-full text-gray-400">
+              <p className="text-center">
+                <div className="text-3xl mb-2">🛒</div>
+                Your cart is empty
+              </p>
+            </div>
           ) : (
-            <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+            <div className="space-y-3">
               {cartItems.map((item) => (
                 <motion.div
                   key={item.cartItemId}
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: 20 }}
-                  style={{
-                    border: "1px solid rgba(255, 255, 255, 0.1)",
-                    borderRadius: "0.75rem",
-                    padding: "1rem",
-                    backgroundColor: "rgba(255, 255, 255, 0.05)",
-                  }}
+                  className="rounded-xl border border-purple-500/20 bg-gradient-to-br from-purple-900/10 to-purple-900/5 p-4 hover:border-purple-500/40 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/10"
                 >
                   {/* Item Header */}
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "0.75rem" }}>
-                    <div style={{ flex: 1 }}>
-                      <h3 style={{ fontWeight: "600", color: "white", marginBottom: "0.25rem" }}>
-                        {item.serviceName}
-                      </h3>
-                      <p style={{ fontSize: "0.75rem", color: "rgb(113, 113, 122)" }}>
-                        {item.category}
-                      </p>
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-white">{item.serviceName}</h3>
+                      <p className="text-xs text-gray-500 mt-1">{item.category}</p>
                     </div>
-                    <button
+                    <motion.button
+                      whileHover={{ scale: 1.2 }}
+                      whileTap={{ scale: 0.9 }}
                       onClick={() => removeFromCart(item.cartItemId)}
-                      style={{ color: "rgb(113, 113, 122)", cursor: "pointer", padding: "0.25rem" }}
+                      className="text-gray-500 hover:text-red-400 transition-colors"
                     >
                       <X size={18} />
-                    </button>
+                    </motion.button>
                   </div>
 
                   {/* Base Price */}
-                  <div style={{ fontSize: "0.875rem", color: "rgb(161, 140, 116)", marginBottom: "0.5rem" }}>
-                    Base: {item.basePrice.toLocaleString()} MAD
+                  <div className="text-sm text-gray-400 mb-2">
+                    Base: <span className="text-[#7CFF5B] font-semibold">{item.basePrice.toLocaleString()} MAD</span>
                   </div>
 
                   {/* Selected Options */}
                   {item.selectedChoicesData && item.selectedChoicesData.length > 0 && (
-                    <div style={{ fontSize: "0.75rem", color: "rgb(226, 232, 240)", marginBottom: "0.5rem", paddingTop: "0.5rem", borderTop: "1px solid rgba(255, 255, 255, 0.1)" }}>
+                    <div className="border-t border-purple-500/10 pt-2 mt-2 space-y-1">
                       {item.selectedChoicesData
                         .filter((choice) => choice.price > 0)
                         .map((choice) => (
-                          <div key={choice.id} style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.25rem" }}>
+                          <div key={choice.id} className="flex justify-between text-xs text-gray-400">
                             <span>→ {choice.label}</span>
-                            <span style={{ color: "rgb(124, 255, 91)" }}>+{choice.price.toLocaleString()} MAD</span>
+                            <span className="text-[#7CFF5B]">+{choice.price.toLocaleString()} MAD</span>
                           </div>
                         ))}
                     </div>
                   )}
 
                   {/* Price & Edit */}
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: "0.5rem", borderTop: "1px solid rgba(255, 255, 255, 0.1)" }}>
-                    <span style={{ fontSize: "1.125rem", fontWeight: "bold", color: "rgb(124, 255, 91)" }}>
+                  <div className="flex items-center justify-between pt-3 mt-3 border-t border-purple-500/10">
+                    <span className="text-lg font-bold text-[#7CFF5B]">
                       {item.finalPrice.toLocaleString()} MAD
                     </span>
-                    <button
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
                       onClick={() => handleEditService(item)}
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "0.25rem",
-                        padding: "0.375rem 0.75rem",
-                        fontSize: "0.75rem",
-                        borderRadius: "0.375rem",
-                        border: "1px solid rgba(124, 255, 91, 0.3)",
-                        backgroundColor: "rgba(124, 255, 91, 0.1)",
-                        color: "rgb(124, 255, 91)",
-                        cursor: "pointer",
-                        transition: "all 0.2s",
-                      }}
-                      onMouseEnter={(e) => {
-                        e.target.style.backgroundColor = "rgba(124, 255, 91, 0.2)";
-                      }}
-                      onMouseLeave={(e) => {
-                        e.target.style.backgroundColor = "rgba(124, 255, 91, 0.1)";
-                      }}
+                      className="flex items-center gap-1 rounded-lg border border-[#7CFF5B]/30 bg-[#7CFF5B]/10 px-3 py-1 text-xs font-medium text-[#7CFF5B] hover:bg-[#7CFF5B]/20 transition-all"
                     >
                       <Edit2 size={12} />
                       Edit
-                    </button>
+                    </motion.button>
                   </div>
                 </motion.div>
               ))}
@@ -196,60 +177,50 @@ export default function Cart() {
         </div>
 
         {/* Footer */}
-        <div style={{ borderTop: "1px solid rgba(255, 255, 255, 0.1)", backgroundColor: "rgba(255, 255, 255, 0.02)", padding: "1.5rem", display: "flex", flexDirection: "column", gap: "1rem" }}>
+        <div className="border-t border-purple-500/20 bg-gradient-to-t from-black via-slate-900/50 to-transparent px-6 py-4 space-y-4">
           {orderSuccess && (
-            <div style={{ borderRadius: "0.5rem", backgroundColor: "rgba(34, 197, 94, 0.2)", border: "1px solid rgba(34, 197, 94, 0.4)", padding: "1rem" }}>
-              <p style={{ fontSize: "0.875rem", fontWeight: "600", color: "rgb(134, 239, 172)" }}>✓ Order placed!</p>
-            </div>
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="rounded-lg bg-green-500/10 border border-green-500/30 px-4 py-3 text-sm font-medium text-green-400 flex items-center gap-2"
+            >
+              <span className="text-lg">✓</span>
+              Order placed successfully!
+            </motion.div>
           )}
 
-          {cartItems.length > 0 && (
-            <div style={{ display: "flex", justifyContent: "space-between", borderTop: "1px solid rgba(255, 255, 255, 0.1)", paddingTop: "1rem" }}>
-              <span style={{ fontSize: "1.125rem", fontWeight: "600", color: "white" }}>Total:</span>
-              <span style={{ fontSize: "1.5rem", fontWeight: "bold", color: "#7CFF5B" }}>{getTotalPrice().toLocaleString()} MAD</span>
+          {/* Total */}
+          <div className="rounded-lg bg-gradient-to-r from-purple-900/30 to-purple-900/10 border border-purple-500/20 px-4 py-4">
+            <div className="flex items-baseline justify-between">
+              <span className="text-gray-300">Total:</span>
+              <span className="text-3xl font-bold text-[#7CFF5B]">
+                {getTotalPrice().toLocaleString()} MAD
+              </span>
             </div>
-          )}
+          </div>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-            <button
+          {/* Action Buttons */}
+          <div className="flex gap-3">
+            <motion.button
               onClick={handlePlaceOrder}
-              disabled={cartItems.length === 0 || isLoading}
-              style={{
-                width: "100%",
-                borderRadius: "9999px",
-                backgroundColor: "#7CFF5B",
-                padding: "0.75rem 1.5rem",
-                fontSize: "0.875rem",
-                fontWeight: "bold",
-                color: "rgb(6, 18, 7)",
-                opacity: cartItems.length === 0 || isLoading ? 0.5 : 1,
-                cursor: cartItems.length === 0 || isLoading ? "not-allowed" : "pointer",
-                transition: "all 0.2s",
-              }}
+              disabled={isLoading || cartItems.length === 0}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="flex-1 rounded-full bg-gradient-to-r from-[#7CFF5B] to-lime-400 px-6 py-3 font-bold text-black shadow-lg hover:shadow-[#7CFF5B]/25 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
             >
               {isLoading ? "Processing..." : "Place Order"}
-            </button>
-            <button
+            </motion.button>
+            <motion.button
               onClick={() => setIsCartOpen(false)}
-              style={{
-                width: "100%",
-                borderRadius: "9999px",
-                border: "1px solid rgba(255, 255, 255, 0.2)",
-                backgroundColor: "transparent",
-                padding: "0.75rem 1.5rem",
-                fontSize: "0.875rem",
-                fontWeight: "bold",
-                color: "white",
-                cursor: "pointer",
-                transition: "all 0.2s",
-              }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="rounded-full border border-purple-500/30 px-6 py-3 font-semibold text-white hover:bg-purple-500/10 transition-all duration-200"
             >
               Continue Shopping
-            </button>
+            </motion.button>
           </div>
         </div>
-      </aside>
-
+      </motion.aside>
       {/* Edit Modal */}
       {editingService && (
         <ServiceDetailModal
@@ -258,7 +229,7 @@ export default function Cart() {
           onClose={handleCloseEditModal}
         />
       )}
-    </>
+    </div>
   );
 }
 
