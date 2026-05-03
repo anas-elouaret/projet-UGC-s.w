@@ -17,9 +17,21 @@ router.post("/", async (req, res) => {
       return res.status(400).json({ message: "Invalid total amount" });
     }
 
+    // Transform items to standard format (handles both old & new cart structure)
+    const transformedItems = items.map((item) => ({
+      // Support both old format (name/price) and new format (serviceName/finalPrice)
+      name: item.name || item.serviceName,
+      price: item.price || item.finalPrice,
+      serviceId: item.serviceId,
+      basePrice: item.basePrice,
+      category: item.category,
+      selectedOptions: item.selectedChoicesData || item.selectedOptions || [],
+      quantity: item.quantity || 1,
+    }));
+
     // Create new order
     const newOrder = new Order({
-      items,
+      items: transformedItems,
       total,
       status: "pending",
       createdAt: createdAt || new Date(),
@@ -32,7 +44,7 @@ router.post("/", async (req, res) => {
     console.log("✓ New Order Created:");
     console.log({
       orderId: savedOrder._id,
-      items: items.map((i) => `${i.name} ($${i.price})`),
+      items: transformedItems.map((i) => `${i.name} ($${i.price})`),
       total: `$${total}`,
       timestamp: new Date().toISOString(),
     });
@@ -59,11 +71,17 @@ router.post("/", async (req, res) => {
       notification,
     });
   } catch (error) {
-    console.error("Order creation error:", error);
+    console.error("❌ Order creation error:", error);
+    console.error("Error details:", {
+      message: error.message,
+      stack: error.stack,
+      requestBody: req.body,
+    });
     res.status(500).json({
       success: false,
       message: "Error placing order",
       error: error.message,
+      details: process.env.NODE_ENV === "development" ? error.stack : undefined,
     });
   }
 });

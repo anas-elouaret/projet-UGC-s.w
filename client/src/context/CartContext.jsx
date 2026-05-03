@@ -7,21 +7,25 @@ export function CartProvider({ children }) {
   const [isCartOpen, setIsCartOpen] = useState(false);
 
   const addToCart = (item) => {
-    const existingItem = cartItems.find((i) => i.id === item.id);
+    // Generate a unique ID for each service configuration
+    const cartItemId = `${item.serviceId}-${Date.now()}-${Math.random()}`;
     
-    if (existingItem) {
-      // If item exists, increase quantity (optional)
-      setCartItems(cartItems.map((i) =>
-        i.id === item.id ? { ...i, quantity: (i.quantity || 1) + 1 } : i
-      ));
-    } else {
-      // Add new item
-      setCartItems([...cartItems, { ...item, quantity: 1 }]);
-    }
+    // Add new item with configuration
+    setCartItems([...cartItems, { 
+      ...item, 
+      cartItemId,
+      addedAt: new Date().toISOString()
+    }]);
   };
 
-  const removeFromCart = (itemId) => {
-    setCartItems(cartItems.filter((item) => item.id !== itemId));
+  const updateCartItem = (cartItemId, updatedItem) => {
+    setCartItems(cartItems.map((item) =>
+      item.cartItemId === cartItemId ? { ...item, ...updatedItem } : item
+    ));
+  };
+
+  const removeFromCart = (cartItemId) => {
+    setCartItems(cartItems.filter((item) => item.cartItemId !== cartItemId));
   };
 
   const clearCart = () => {
@@ -30,15 +34,13 @@ export function CartProvider({ children }) {
 
   const getTotalPrice = () => {
     return cartItems.reduce((total, item) => {
-      const price = typeof item.price === "string"
-        ? parseFloat(item.price.replace("$", ""))
-        : item.price;
-      return total + price * (item.quantity || 1);
+      const price = item.finalPrice || item.price || 0;
+      return total + (typeof price === "number" ? price : parseFloat(price) || 0);
     }, 0);
   };
 
   const getCartCount = () => {
-    return cartItems.reduce((count, item) => count + (item.quantity || 1), 0);
+    return cartItems.length;
   };
 
   const value = {
@@ -46,6 +48,7 @@ export function CartProvider({ children }) {
     isCartOpen,
     setIsCartOpen,
     addToCart,
+    updateCartItem,
     removeFromCart,
     clearCart,
     getTotalPrice,

@@ -1,11 +1,16 @@
-import { X } from "lucide-react";
+import { X, Edit2 } from "lucide-react";
 import { useCart } from "../../context/CartContext";
 import { useState } from "react";
+import { motion } from "framer-motion";
+import ServiceDetailModal from "../services/ServiceDetailModal";
+import { servicesData } from "../../data/servicesData";
 
 export default function Cart() {
   const { cartItems, isCartOpen, setIsCartOpen, removeFromCart, clearCart, getTotalPrice } = useCart();
   const [isLoading, setIsLoading] = useState(false);
   const [orderSuccess, setOrderSuccess] = useState(false);
+  const [editingService, setEditingService] = useState(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   const handlePlaceOrder = async () => {
     if (cartItems.length === 0) {
@@ -47,6 +52,19 @@ export default function Cart() {
     }
   };
 
+  const handleEditService = (item) => {
+    const serviceData = servicesData.find((s) => s.id === item.serviceId);
+    setEditingService({ ...item, ...serviceData });
+    setIsEditModalOpen(true);
+  };
+
+  const handleCloseEditModal = () => {
+    setIsEditModalOpen(false);
+    setTimeout(() => {
+      setEditingService(null);
+    }, 300);
+  };
+
   const overlayStyle = {
     position: "fixed",
     inset: 0,
@@ -76,6 +94,7 @@ export default function Cart() {
     <>
       <div style={overlayStyle} onClick={() => setIsCartOpen(false)} />
       <aside style={asideStyle}>
+        {/* Header */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid rgba(255, 255, 255, 0.1)", padding: "1.5rem" }}>
           <h2 style={{ fontSize: "1.25rem", fontWeight: "bold", color: "white" }}>Shopping Cart</h2>
           <button onClick={() => setIsCartOpen(false)} style={{ color: "rgb(161, 140, 116)", cursor: "pointer" }}>
@@ -83,33 +102,100 @@ export default function Cart() {
           </button>
         </div>
 
+        {/* Items */}
         <div style={{ flex: 1, overflowY: "auto", padding: "1rem 1.5rem" }}>
           {cartItems.length === 0 ? (
             <p style={{ textAlign: "center", color: "rgb(161, 140, 116)" }}>Your cart is empty</p>
           ) : (
             <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
               {cartItems.map((item) => (
-                <div key={item.id} style={{ border: "1px solid rgba(255, 255, 255, 0.1)", borderRadius: "0.5rem", padding: "1rem", backgroundColor: "rgba(255, 255, 255, 0.05)" }}>
-                  <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <motion.div
+                  key={item.cartItemId}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 20 }}
+                  style={{
+                    border: "1px solid rgba(255, 255, 255, 0.1)",
+                    borderRadius: "0.75rem",
+                    padding: "1rem",
+                    backgroundColor: "rgba(255, 255, 255, 0.05)",
+                  }}
+                >
+                  {/* Item Header */}
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "0.75rem" }}>
                     <div style={{ flex: 1 }}>
-                      <h3 style={{ fontWeight: "600", color: "white" }}>{item.name}</h3>
-                      <p style={{ marginTop: "0.25rem", fontSize: "0.875rem", color: "rgb(161, 140, 116)" }}>
-                        ${typeof item.price === "string" ? item.price.replace("$", "") : item.price}
+                      <h3 style={{ fontWeight: "600", color: "white", marginBottom: "0.25rem" }}>
+                        {item.serviceName}
+                      </h3>
+                      <p style={{ fontSize: "0.75rem", color: "rgb(113, 113, 122)" }}>
+                        {item.category}
                       </p>
-                      {item.quantity && item.quantity > 1 && (
-                        <p style={{ marginTop: "0.25rem", fontSize: "0.75rem", color: "rgb(113, 113, 122)" }}>Qty: {item.quantity}</p>
-                      )}
                     </div>
-                    <button onClick={() => removeFromCart(item.id)} style={{ color: "rgb(113, 113, 122)", cursor: "pointer" }}>
+                    <button
+                      onClick={() => removeFromCart(item.cartItemId)}
+                      style={{ color: "rgb(113, 113, 122)", cursor: "pointer", padding: "0.25rem" }}
+                    >
                       <X size={18} />
                     </button>
                   </div>
-                </div>
+
+                  {/* Base Price */}
+                  <div style={{ fontSize: "0.875rem", color: "rgb(161, 140, 116)", marginBottom: "0.5rem" }}>
+                    Base: {item.basePrice.toLocaleString()} MAD
+                  </div>
+
+                  {/* Selected Options */}
+                  {item.selectedChoicesData && item.selectedChoicesData.length > 0 && (
+                    <div style={{ fontSize: "0.75rem", color: "rgb(226, 232, 240)", marginBottom: "0.5rem", paddingTop: "0.5rem", borderTop: "1px solid rgba(255, 255, 255, 0.1)" }}>
+                      {item.selectedChoicesData
+                        .filter((choice) => choice.price > 0)
+                        .map((choice) => (
+                          <div key={choice.id} style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.25rem" }}>
+                            <span>→ {choice.label}</span>
+                            <span style={{ color: "rgb(124, 255, 91)" }}>+{choice.price.toLocaleString()} MAD</span>
+                          </div>
+                        ))}
+                    </div>
+                  )}
+
+                  {/* Price & Edit */}
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: "0.5rem", borderTop: "1px solid rgba(255, 255, 255, 0.1)" }}>
+                    <span style={{ fontSize: "1.125rem", fontWeight: "bold", color: "rgb(124, 255, 91)" }}>
+                      {item.finalPrice.toLocaleString()} MAD
+                    </span>
+                    <button
+                      onClick={() => handleEditService(item)}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.25rem",
+                        padding: "0.375rem 0.75rem",
+                        fontSize: "0.75rem",
+                        borderRadius: "0.375rem",
+                        border: "1px solid rgba(124, 255, 91, 0.3)",
+                        backgroundColor: "rgba(124, 255, 91, 0.1)",
+                        color: "rgb(124, 255, 91)",
+                        cursor: "pointer",
+                        transition: "all 0.2s",
+                      }}
+                      onMouseEnter={(e) => {
+                        e.target.style.backgroundColor = "rgba(124, 255, 91, 0.2)";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.target.style.backgroundColor = "rgba(124, 255, 91, 0.1)";
+                      }}
+                    >
+                      <Edit2 size={12} />
+                      Edit
+                    </button>
+                  </div>
+                </motion.div>
               ))}
             </div>
           )}
         </div>
 
+        {/* Footer */}
         <div style={{ borderTop: "1px solid rgba(255, 255, 255, 0.1)", backgroundColor: "rgba(255, 255, 255, 0.02)", padding: "1.5rem", display: "flex", flexDirection: "column", gap: "1rem" }}>
           {orderSuccess && (
             <div style={{ borderRadius: "0.5rem", backgroundColor: "rgba(34, 197, 94, 0.2)", border: "1px solid rgba(34, 197, 94, 0.4)", padding: "1rem" }}>
@@ -120,7 +206,7 @@ export default function Cart() {
           {cartItems.length > 0 && (
             <div style={{ display: "flex", justifyContent: "space-between", borderTop: "1px solid rgba(255, 255, 255, 0.1)", paddingTop: "1rem" }}>
               <span style={{ fontSize: "1.125rem", fontWeight: "600", color: "white" }}>Total:</span>
-              <span style={{ fontSize: "1.5rem", fontWeight: "bold", color: "#7CFF5B" }}>${getTotalPrice().toFixed(2)}</span>
+              <span style={{ fontSize: "1.5rem", fontWeight: "bold", color: "#7CFF5B" }}>{getTotalPrice().toLocaleString()} MAD</span>
             </div>
           )}
 
@@ -138,6 +224,7 @@ export default function Cart() {
                 color: "rgb(6, 18, 7)",
                 opacity: cartItems.length === 0 || isLoading ? 0.5 : 1,
                 cursor: cartItems.length === 0 || isLoading ? "not-allowed" : "pointer",
+                transition: "all 0.2s",
               }}
             >
               {isLoading ? "Processing..." : "Place Order"}
@@ -148,12 +235,13 @@ export default function Cart() {
                 width: "100%",
                 borderRadius: "9999px",
                 border: "1px solid rgba(255, 255, 255, 0.2)",
-                backgroundColor: "rgba(255, 255, 255, 0.02)",
+                backgroundColor: "transparent",
                 padding: "0.75rem 1.5rem",
                 fontSize: "0.875rem",
-                fontWeight: "600",
+                fontWeight: "bold",
                 color: "white",
                 cursor: "pointer",
+                transition: "all 0.2s",
               }}
             >
               Continue Shopping
@@ -161,6 +249,15 @@ export default function Cart() {
           </div>
         </div>
       </aside>
+
+      {/* Edit Modal */}
+      {editingService && (
+        <ServiceDetailModal
+          service={editingService}
+          isOpen={isEditModalOpen}
+          onClose={handleCloseEditModal}
+        />
+      )}
     </>
   );
 }

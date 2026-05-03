@@ -1,8 +1,8 @@
 import { useState } from "react";
-import HybridNavbar from "../components/hybrid/HybridNavbar";
-import { servicesData } from "../data/servicesData";
-import ServiceCardEnhanced from "../components/services/ServiceCardEnhanced";
-import ServiceDetailModal from "../components/services/ServiceDetailModal";
+import HybridNavbar from "../../components/hybrid/HybridNavbar";
+import { servicesData } from "../../data/servicesData";
+import ServiceCardEnhanced from "../../components/services/ServiceCardEnhanced";
+import ServiceDetailModal from "../../components/services/ServiceDetailModal";
 import { motion } from "framer-motion";
 
 export default function ServicesPage() {
@@ -45,28 +45,21 @@ export default function ServicesPage() {
         </motion.div>
 
         {/* Services Grid */}
-        <motion.div
-          className="grid gap-6 md:grid-cols-2 lg:grid-cols-2"
-          initial="hidden"
-          animate="visible"
-          variants={{
-            hidden: {},
-            visible: {
-              transition: {
-                staggerChildren: 0.1,
-              },
-            },
-          }}
-        >
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2">
           {servicesData.map((service, idx) => (
-            <ServiceCardEnhanced
+            <motion.div
               key={service.id}
-              service={service}
-              onSelect={handleServiceSelect}
-              index={idx}
-            />
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: idx * 0.1 }}
+            >
+              <ServiceCardEnhanced
+                service={service}
+                onSelect={handleServiceSelect}
+              />
+            </motion.div>
           ))}
-        </motion.div>
+        </div>
 
         {/* Info Section */}
         <motion.div

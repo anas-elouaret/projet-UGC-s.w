@@ -1,0 +1,338 @@
+// Enhanced services data with configurable options and add-ons
+export const servicesData = [
+  {
+    id: "ugc-creation",
+    title: "UGC Content Creation",
+    description: "Short-form videos, creator-led ads, and social proof assets designed to improve paid and organic performance.",
+    basePrice: 5990, // Converted to MAD
+    category: "content",
+    image: "🎬",
+    details: "Get engaging, conversion-optimized UGC content from professional creators. Perfect for e-commerce, SaaS, and digital products.",
+    features: [
+      "Fast campaign-ready delivery",
+      "Creator matching by niche",
+      "Cross-platform content formats",
+    ],
+    options: [
+      {
+        id: "delivery-speed",
+        name: "Delivery Speed",
+        type: "radio",
+        required: true,
+        default: "standard",
+        choices: [
+          { id: "standard", label: "Standard (5-7 days)", price: 0 },
+          { id: "express", label: "Express (2-3 days)", price: 1500 },
+          { id: "rush", label: "Rush (24 hours)", price: 3000 },
+        ],
+      },
+      {
+        id: "revision-package",
+        name: "Revision Package",
+        type: "radio",
+        required: true,
+        default: "standard",
+        choices: [
+          { id: "standard", label: "2 Revisions Included", price: 0 },
+          { id: "extended", label: "5 Revisions Included", price: 1000 },
+          { id: "unlimited", label: "Unlimited Revisions", price: 2000 },
+        ],
+      },
+      {
+        id: "quality-tier",
+        name: "Quality & Features",
+        type: "radio",
+        required: false,
+        default: null,
+        choices: [
+          { id: "standard-quality", label: "Standard Quality", price: 0 },
+          { id: "premium-quality", label: "Premium Quality (4K, Color Grading)", price: 2500 },
+          { id: "cinematic", label: "Cinematic Package (4K, VFX, Music)", price: 5000 },
+        ],
+      },
+      {
+        id: "add_ons",
+        name: "Add-ons",
+        type: "checkbox",
+        required: false,
+        choices: [
+          { id: "captions", label: "Professional Captions & Subtitles", price: 750 },
+          { id: "voiceover", label: "Professional Voiceover", price: 1500 },
+          { id: "variations", label: "3 Variations per Video", price: 1000 },
+          { id: "music-license", label: "Premium Music License", price: 500 },
+        ],
+      },
+    ],
+    reviews: [
+      { id: 1, userName: "Ahmed K.", rating: 5, comment: "Amazing quality UGC content! Boosted our sales significantly.", date: "2024-01-15" },
+      { id: 2, userName: "Fatima M.", rating: 4, comment: "Great creators, fast delivery. Minor revisions needed but overall excellent.", date: "2024-02-20" },
+      { id: 3, userName: "Youssef B.", rating: 5, comment: "Professional team, exceeded expectations. Highly recommend!", date: "2024-03-10" },
+    ],
+  },
+  {
+    id: "photography",
+    title: "Photography",
+    description: "Studio and lifestyle photography for products, teams, and campaigns with brand-consistent art direction.",
+    basePrice: 7990, // Converted to MAD
+    category: "visual",
+    image: "📸",
+    details: "Professional photography services for e-commerce, corporate events, and marketing campaigns. Includes editing and high-res deliverables.",
+    features: [
+      "E-commerce optimized shots",
+      "High-converting visual storytelling",
+      "Retouching and export included",
+    ],
+    options: [
+      {
+        id: "session-type",
+        name: "Session Type",
+        type: "radio",
+        required: true,
+        default: "studio",
+        choices: [
+          { id: "studio", label: "Studio Session (8 hours)", price: 0 },
+          { id: "location", label: "Location Shoot (8 hours)", price: 2000 },
+          { id: "hybrid", label: "Hybrid (Studio + Location)", price: 4000 },
+        ],
+      },
+      {
+        id: "images-count",
+        name: "Final Images",
+        type: "radio",
+        required: true,
+        default: "standard",
+        choices: [
+          { id: "standard", label: "25 Edited Images", price: 0 },
+          { id: "extended", label: "50 Edited Images", price: 3000 },
+          { id: "comprehensive", label: "100 Edited Images", price: 6000 },
+        ],
+      },
+      {
+        id: "editing-level",
+        name: "Editing & Enhancement",
+        type: "radio",
+        required: false,
+        default: null,
+        choices: [
+          { id: "standard-edit", label: "Standard Editing", price: 0 },
+          { id: "advanced-edit", label: "Advanced Color Grading", price: 1500 },
+          { id: "creative-edit", label: "Creative Compositing", price: 3000 },
+        ],
+      },
+      {
+        id: "add_ons",
+        name: "Add-ons",
+        type: "checkbox",
+        required: false,
+        choices: [
+          { id: "drone", label: "Drone Photography", price: 2000 },
+          { id: "video-reel", label: "Behind-the-Scenes Video", price: 2500 },
+          { id: "album-design", label: "Digital Album Design", price: 1000 },
+          { id: "prints", label: "Premium Prints (20pc)", price: 1500 },
+        ],
+      },
+    ],
+    reviews: [
+      { id: 1, userName: "Sara L.", rating: 5, comment: "Stunning photos! Perfect for our brand campaign.", date: "2024-01-22" },
+      { id: 2, userName: "Omar T.", rating: 4, comment: "Great photographer, professional setup. Loved the results.", date: "2024-02-14" },
+    ],
+  },
+  {
+    id: "web-development",
+    title: "Website Development",
+    description: "Conversion-led websites with responsive UI, clear messaging, and scalable structure for business growth.",
+    basePrice: 14990, // Converted to MAD
+    category: "development",
+    image: "🌐",
+    details: "Custom websites built for conversions. Includes responsive design, SEO optimization, and performance tuning.",
+    features: [
+      "SEO-ready pages",
+      "Speed-first builds",
+      "CRM and analytics integration",
+    ],
+    options: [
+      {
+        id: "page-count",
+        name: "Number of Pages",
+        type: "radio",
+        required: true,
+        default: "5-page",
+        choices: [
+          { id: "5-page", label: "5-Page Website", price: 0 },
+          { id: "10-page", label: "10-Page Website", price: 4000 },
+          { id: "unlimited", label: "Unlimited Pages", price: 8000 },
+        ],
+      },
+      {
+        id: "cms-type",
+        name: "Content Management",
+        type: "radio",
+        required: true,
+        default: "static",
+        choices: [
+          { id: "static", label: "Static Website", price: 0 },
+          { id: "cms", label: "CMS Integration (Easy Updates)", price: 3000 },
+          { id: "headless", label: "Headless CMS + API", price: 6000 },
+        ],
+      },
+      {
+        id: "integrations",
+        name: "Business Integrations",
+        type: "checkbox",
+        required: false,
+        choices: [
+          { id: "analytics", label: "Advanced Analytics Setup", price: 1500 },
+          { id: "crm", label: "CRM Integration (HubSpot/Mailchimp)", price: 2000 },
+          { id: "ecommerce", label: "E-commerce Integration", price: 4000 },
+          { id: "calendar", label: "Booking/Calendar System", price: 2500 },
+          { id: "forms", label: "Advanced Form Builder", price: 1000 },
+        ],
+      },
+      {
+        id: "add_ons",
+        name: "Add-ons",
+        type: "checkbox",
+        required: false,
+        choices: [
+          { id: "seo-audit", label: "Full SEO Audit & Optimization", price: 3000 },
+          { id: "copywriting", label: "Professional Copywriting", price: 2500 },
+          { id: "maintenance", label: "3 Months Maintenance", price: 2000 },
+          { id: "training", label: "Training Session (2 hours)", price: 1500 },
+        ],
+      },
+    ],
+    reviews: [
+      { id: 1, userName: "Karim R.", rating: 5, comment: "Outstanding website! Increased our conversions by 40%.", date: "2024-01-30" },
+      { id: 2, userName: "Leila S.", rating: 5, comment: "Professional team, on-time delivery. Highly satisfied.", date: "2024-03-05" },
+      { id: 3, userName: "Mohamed A.", rating: 4, comment: "Great design and functionality. Minor tweaks needed but excellent overall.", date: "2024-02-18" },
+    ],
+  },
+  {
+    id: "web-apps",
+    title: "Web Applications",
+    description: "Custom internal tools, client portals, and SaaS products from idea to launch with clear milestones.",
+    basePrice: 24990, // Converted to MAD
+    category: "development",
+    image: "⚙️",
+    details: "Full-stack web applications with user authentication, database, and real-time features. Production-ready code.",
+    features: [
+      "Product strategy support",
+      "Robust admin workflows",
+      "Secure architecture baseline",
+    ],
+    options: [
+      {
+        id: "scope",
+        name: "Project Scope",
+        type: "radio",
+        required: true,
+        default: "mvp",
+        choices: [
+          { id: "mvp", label: "MVP (Core Features)", price: 0 },
+          { id: "extended", label: "Extended (Additional Features)", price: 8000 },
+          { id: "premium", label: "Premium (Full Feature Set)", price: 15000 },
+        ],
+      },
+      {
+        id: "database",
+        name: "Database & Infrastructure",
+        type: "radio",
+        required: true,
+        default: "standard",
+        choices: [
+          { id: "standard", label: "Standard Setup", price: 0 },
+          { id: "advanced", label: "Advanced with Caching", price: 4000 },
+          { id: "enterprise", label: "Enterprise Grade", price: 10000 },
+        ],
+      },
+      {
+        id: "add_ons",
+        name: "Add-ons",
+        type: "checkbox",
+        required: false,
+        choices: [
+          { id: "mobile", label: "Native Mobile Apps", price: 20000 },
+          { id: "api", label: "Public API & Documentation", price: 6000 },
+          { id: "analytics", label: "Custom Analytics Dashboard", price: 4000 },
+          { id: "support", label: "6 Months Premium Support", price: 8000 },
+          { id: "deployment", label: "DevOps Setup & Deployment", price: 5000 },
+        ],
+      },
+    ],
+    reviews: [
+      { id: 1, userName: "Nadia H.", rating: 5, comment: "Incredible web app! Streamlined our operations completely.", date: "2024-02-10" },
+      { id: 2, userName: "Hassan K.", rating: 5, comment: "Top-notch development, exceeded all expectations.", date: "2024-03-15" },
+    ],
+  },
+  {
+    id: "printing",
+    title: "Printing Services",
+    description: "Business cards, flyers, packaging, and merch printed with premium finishing and delivery support.",
+    basePrice: 2990, // Converted to MAD
+    category: "print",
+    image: "🖨️",
+    details: "High-quality printing services with multiple material options, finishes, and delivery speeds.",
+    features: [
+      "Design validation pre-print",
+      "Multiple material options",
+      "Bulk and recurring orders",
+    ],
+    options: [
+      {
+        id: "product-type",
+        name: "Product Type",
+        type: "radio",
+        required: true,
+        default: "business-cards",
+        choices: [
+          { id: "business-cards", label: "Business Cards (500 qty)", price: 0 },
+          { id: "flyers", label: "Flyers (500 qty)", price: 500 },
+          { id: "postcards", label: "Postcards (250 qty)", price: 800 },
+          { id: "labels", label: "Custom Labels (1000 qty)", price: 1200 },
+        ],
+      },
+      {
+        id: "material",
+        name: "Material & Finish",
+        type: "radio",
+        required: true,
+        default: "standard",
+        choices: [
+          { id: "standard", label: "Standard Card Stock", price: 0 },
+          { id: "premium", label: "Premium Cardstock", price: 750 },
+          { id: "textured", label: "Textured/Specialty Paper", price: 1200 },
+          { id: "recycled", label: "Eco-Friendly Recycled", price: 500 },
+        ],
+      },
+      {
+        id: "finish",
+        name: "Finish Option",
+        type: "radio",
+        required: false,
+        default: null,
+        choices: [
+          { id: "matte", label: "Matte Finish", price: 0 },
+          { id: "glossy", label: "Glossy Finish", price: 250 },
+          { id: "foil", label: "Foil Stamp (Gold/Silver)", price: 1500 },
+          { id: "emboss", label: "Embossing", price: 1000 },
+        ],
+      },
+      {
+        id: "add_ons",
+        name: "Add-ons",
+        type: "checkbox",
+        required: false,
+        choices: [
+          { id: "rush-print", label: "Rush Production (2 days)", price: 1000 },
+          { id: "design-help", label: "Design Consultation", price: 750 },
+          { id: "proofs", label: "Physical Proof (before print)", price: 500 },
+          { id: "packaging", label: "Premium Packaging", price: 600 },
+        ],
+      },
+    ],
+    reviews: [
+      { id: 1, userName: "Zineb T.", rating: 4, comment: "Quality prints, fast delivery. Great for business materials.", date: "2024-01-25" },
+      { id: 2, userName: "Rachid M.", rating: 5, comment: "Excellent printing service! Professional finish.", date: "2024-02-28" },
+    ],
+  },
+];
