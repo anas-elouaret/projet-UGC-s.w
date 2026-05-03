@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
 import { ChevronRight } from "lucide-react";
+import AddToCartButton from "../cart/AddToCartButton";
+import { useCart } from "../../context/CartContext";
 
 const cardVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -26,6 +28,41 @@ const hoverVariants = {
 };
 
 export default function ServiceCard({ service, onSelect, index = 0 }) {
+  const { addToCart, setIsCartOpen } = useCart();
+
+  // Calculate default cart item
+  const getDefaultCartItem = () => {
+    const selectedChoices = [];
+    service.options?.forEach((option) => {
+      if (option.default) {
+        const defaultChoice = option.choices.find((c) => c.id === option.default);
+        if (defaultChoice) {
+          selectedChoices.push({
+            ...defaultChoice,
+            optionId: option.id,
+            type: option.type,
+          });
+        }
+      }
+    });
+
+    let finalPrice = service.basePrice;
+    selectedChoices.forEach((choice) => {
+      finalPrice += choice.price || 0;
+    });
+
+    return {
+      serviceId: service.id,
+      serviceName: service.title,
+      serviceImage: service.image,
+      basePrice: service.basePrice,
+      selectedChoices: selectedChoices,
+      finalPrice: finalPrice,
+      category: service.category,
+    };
+  };
+
+  const defaultCartItem = getDefaultCartItem();
   return (
     <motion.article
       variants={cardVariants}
@@ -85,38 +122,45 @@ export default function ServiceCard({ service, onSelect, index = 0 }) {
       </ul>
 
       {/* Price & CTA */}
-      <div className="flex items-end justify-between pt-6 border-t border-white/10">
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          transition={{ duration: 0.2 }}
-        >
-          <p className="text-xs text-zinc-400 mb-1">Starting from</p>
-          <p className="text-3xl font-bold text-[#7CFF5B] group-hover:text-[#8CFF6B] transition-colors duration-300">
-            {service.basePrice.toLocaleString()} MAD
-          </p>
-        </motion.div>
-        <motion.button
-          onClick={(e) => {
-            e.stopPropagation();
-            onSelect(service);
-          }}
-          whileHover={{
-            scale: 1.05,
-            gap: "0.75rem",
-            boxShadow: "0 0 20px rgba(124, 255, 91, 0.3)"
-          }}
-          whileTap={{ scale: 0.95 }}
-          transition={{ duration: 0.2 }}
-          className="flex items-center gap-2 rounded-full bg-gradient-to-r from-white/10 to-white/5 px-4 py-2 text-sm font-bold text-white transition-all duration-300 hover:from-[#7CFF5B] hover:to-[#6CFF4B] hover:text-black border border-white/20 hover:border-[#7CFF5B]/50"
-        >
-          Customize
+      <div className="pt-6 border-t border-white/10">
+        <div className="flex items-end justify-between mb-4">
           <motion.div
-            whileHover={{ x: 3 }}
+            whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.2 }}
           >
-            <ChevronRight size={16} />
+            <p className="text-xs text-zinc-400 mb-1">Starting from</p>
+            <p className="text-3xl font-bold text-[#7CFF5B] group-hover:text-[#8CFF6B] transition-colors duration-300">
+              {service.basePrice.toLocaleString()} MAD
+            </p>
           </motion.div>
-        </motion.button>
+          <motion.button
+            onClick={(e) => {
+              e.stopPropagation();
+              onSelect(service);
+            }}
+            whileHover={{
+              scale: 1.05,
+              gap: "0.75rem",
+              boxShadow: "0 0 20px rgba(124, 255, 91, 0.3)"
+            }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ duration: 0.2 }}
+            className="flex items-center gap-2 rounded-full bg-gradient-to-r from-white/10 to-white/5 px-4 py-2 text-sm font-bold text-white transition-all duration-300 hover:from-[#7CFF5B] hover:to-[#6CFF4B] hover:text-black border border-white/20 hover:border-[#7CFF5B]/50"
+          >
+            Customize
+            <motion.div
+              whileHover={{ x: 3 }}
+              transition={{ duration: 0.2 }}
+            >
+              <ChevronRight size={16} />
+            </motion.div>
+          </motion.button>
+        </div>
+        <div className="flex justify-center">
+          <div onClick={(e) => e.stopPropagation()}>
+            <AddToCartButton item={defaultCartItem} className="w-full" />
+          </div>
+        </div>
       </div>
     </motion.article>
   );

@@ -335,4 +335,62 @@ export const servicesData = [
       { id: 2, userName: "Rachid M.", rating: 5, comment: "Excellent printing service! Professional finish.", date: "2024-02-28" },
     ],
   },
+  {
+    id: "social-media-management",
+    title: "Social Media Management",
+    description: "We create, manage and grow your social media presence",
+    basePrice: 999, // Starter package price
+    category: "marketing",
+    image: "📱",
+    details: "Comprehensive social media management including content creation, account optimization, strategic planning, and performance analytics to grow your online presence.",
+    features: [
+      "Content creation (Reels + Posts)",
+      "Account management",
+      "Strategy & planning",
+      "Analytics & reporting",
+    ],
+    options: [
+      {
+        id: "package",
+        name: "Package Tier",
+        type: "radio",
+        required: true,
+        default: "starter",
+        choices: [
+          { id: "starter", label: "Starter Package - 999 MAD", price: 0 },
+          { id: "growth", label: "Growth Package - 1999 MAD", price: 1000 },
+          { id: "premium", label: "Premium Package - 3499 MAD", price: 2500 },
+        ],
+      },
+      {
+        id: "platforms",
+        name: "Social Platforms",
+        type: "checkbox",
+        required: true,
+        choices: [
+          { id: "instagram", label: "Instagram", price: 0 },
+          { id: "facebook", label: "Facebook", price: 0 },
+          { id: "tiktok", label: "TikTok", price: 200 },
+          { id: "linkedin", label: "LinkedIn", price: 300 },
+          { id: "twitter", label: "Twitter/X", price: 150 },
+        ],
+      },
+      {
+        id: "add_ons",
+        name: "Add-ons",
+        type: "checkbox",
+        required: false,
+        choices: [
+          { id: "ads-management", label: "Social Media Ads Management", price: 800 },
+          { id: "influencer", label: "Influencer Collaboration Setup", price: 600 },
+          { id: "competitor-analysis", label: "Competitor Analysis Report", price: 400 },
+          { id: "monthly-reports", label: "Advanced Monthly Reports", price: 300 },
+        ],
+      },
+    ],
+    reviews: [
+      { id: 1, userName: "Amal B.", rating: 5, comment: "Transformed our social media presence! Engagement up 300%.", date: "2024-02-15" },
+      { id: 2, userName: "Yassine K.", rating: 5, comment: "Professional content and strategic insights. Highly recommend!", date: "2024-03-20" },
+    ],
+  },
 ];
