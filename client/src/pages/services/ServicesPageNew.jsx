@@ -36,7 +36,7 @@ export default function ServicesPage() {
             Services
           </p>
           <h1 className="max-w-3xl text-4xl sm:text-5xl font-black tracking-tight mb-4">
-            Agency-grade services with marketplace flexibility.
+            Agency-grade services with flexible delivery.
           </h1>
           <p className="max-w-2xl text-sm sm:text-base leading-relaxed text-zinc-300">
             Customize each service with options that matter to your business. Choose exactly what you need, 

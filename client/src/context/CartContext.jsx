@@ -5,6 +5,11 @@ const CartContext = createContext();
 export function CartProvider({ children }) {
   const [cartItems, setCartItems] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [newItemAdded, setNewItemAdded] = useState(false);
+  const [flyingItem, setFlyingItem] = useState(null);
+  const [endRect, setEndRect] = useState(null);
+  const [shakeCart, setShakeCart] = useState(false);
+  const [muted, setMuted] = useState(false);
 
   const addToCart = (item) => {
     // Generate a unique ID for each service configuration
@@ -16,6 +21,8 @@ export function CartProvider({ children }) {
       cartItemId,
       addedAt: new Date().toISOString()
     }]);
+    setNewItemAdded(true);
+    setTimeout(() => setNewItemAdded(false), 1500);
   };
 
   const updateCartItem = (cartItemId, updatedItem) => {
@@ -53,6 +60,15 @@ export function CartProvider({ children }) {
     clearCart,
     getTotalPrice,
     getCartCount,
+    newItemAdded,
+    flyingItem,
+    setFlyingItem,
+    endRect,
+    setEndRect,
+    shakeCart,
+    setShakeCart,
+    muted,
+    setMuted,
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

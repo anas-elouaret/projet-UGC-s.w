@@ -12,20 +12,30 @@ import PrintingPage from "./pages/printing/PrintingPage";
 import ClientDashboardPage from "./pages/dashboard/ClientDashboardPage";
 import CreatorDashboardPage from "./pages/dashboard/CreatorDashboardPage";
 import StartProjectPage from "./pages/startProject/StartProjectPage";
+import FlyingItem from "./components/cart/FlyingItem";
+import { useCart } from "./context/CartContext";
 
 export default function App() {
   const location = useLocation();
+  const { flyingItem, setFlyingItem, endRect, setShakeCart } = useCart();
 
   return (
     <>
       <BackgroundScene />
       <Cart />
+      {flyingItem && (
+        <FlyingItem
+          item={flyingItem}
+          endRect={endRect}
+          onComplete={() => setFlyingItem(null)}
+          setShakeCart={setShakeCart}
+        />
+      )}
       <AnimatePresence mode="wait" initial={false}>
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={<PageTransition><HomePage /></PageTransition>} />
           <Route path="/auth" element={<PageTransition><AuthPage /></PageTransition>} />
-          <Route path="/marketplace" element={<PageTransition><CatalogPage /></PageTransition>} />
-          <Route path="/catalog" element={<Navigate to="/marketplace" replace />} />
+          <Route path="/catalog" element={<Navigate to="/services" replace />} />
           <Route path="/services" element={<PageTransition><ServicesPage /></PageTransition>} />
           <Route path="/packages" element={<PageTransition><PackagesPage /></PageTransition>} />
           <Route path="/printing" element={<PageTransition><PrintingPage /></PageTransition>} />

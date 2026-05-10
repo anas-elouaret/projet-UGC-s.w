@@ -2,6 +2,8 @@ import { useState, useRef, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "../../context/LanguageContext";
+import { useCart } from "../../context/CartContext";
+import { Volume2, VolumeX } from "lucide-react";
 
 const services = [
   { name: "Business Cards", path: "/business-cards" },

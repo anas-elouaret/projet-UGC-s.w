@@ -1,10 +1,11 @@
 import { Link, useLocation } from "react-router-dom";
 import { useLanguage } from "../../context/LanguageContext";
+import { useCart } from "../../context/CartContext";
 import CartIcon from "../cart/CartIcon";
+import { Volume2, VolumeX } from "lucide-react";
 
 const navItems = [
   { key: "home", fallback: "Home", to: "/" },
-  { key: "marketplace", fallback: "Marketplace", to: "/marketplace" },
   { key: "services", fallback: "Services", to: "/services" },
   { key: "packages", fallback: "Packages", to: "/packages" },
   { key: "printing", fallback: "Printing", to: "/printing" },
@@ -13,6 +14,7 @@ const navItems = [
 export default function HybridNavbar() {
   const location = useLocation();
   const { lang, setLang, t } = useLanguage();
+  const { muted, setMuted } = useCart();
 
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-[#070707]/85 backdrop-blur-xl">
@@ -53,6 +55,13 @@ export default function HybridNavbar() {
             </select>
           </label>
           <CartIcon />
+          <button
+            onClick={() => setMuted(!muted)}
+            className="p-2 text-zinc-400 hover:text-white transition-colors rounded-full hover:bg-white/[0.05]"
+            title={muted ? "Unmute sounds" : "Mute sounds"}
+          >
+            {muted ? <VolumeX size={20} /> : <Volume2 size={20} />}
+          </button>
           <Link
             to="/dashboard/client"
             className="hidden rounded-full border border-white/20 bg-white/[0.02] px-4 py-2 text-sm font-semibold text-white transition hover:border-white/40 hover:bg-white/[0.05] sm:block"

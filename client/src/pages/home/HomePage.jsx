@@ -1,238 +1,278 @@
-import { Link, useNavigate } from "react-router-dom";
-import HybridNavbar from "../../components/hybrid/HybridNavbar";
-import { creatorHighlights, packageItems } from "../../components/hybrid/hybridData";
-import { useLanguage } from "../../context/LanguageContext";
-import ClientRegistrationForm from "../../components/common/ClientRegistrationForm";
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { Link, useNavigate } from "react-router-dom";
+import { motion, useMotionValue, useTransform } from "framer-motion";
+import HybridNavbar from "../../components/hybrid/HybridNavbar";
 import { HoverGlow } from "../../components/animations";
+import { useLanguage } from "../../context/LanguageContext";
+import { creatorHighlights, packageItems } from "../../components/hybrid/hybridData";
+import HologramScene from "../../components/home/HologramLogo";
 
 export default function HomePage() {
   const { t } = useLanguage();
   const navigate = useNavigate();
   const tx = (key, fallback) => t?.[key] || fallback;
-  const [showRegistrationForm, setShowRegistrationForm] = useState(false);
+  const [activeFaq, setActiveFaq] = useState(0);
+  const pointerX = useMotionValue(0);
+  const pointerY = useMotionValue(0);
+  const rotateY = useTransform(pointerX, [-120, 120], [16, -16]);
+  const rotateX = useTransform(pointerY, [-80, 80], [-10, 10]);
+
+  const handleMouseMove = (event) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = ((event.clientX - rect.left) / rect.width - 0.5) * 2;
+    const y = ((event.clientY - rect.top) / rect.height - 0.5) * 2;
+    pointerX.set(x * 20);
+    pointerY.set(y * 10);
+  };
+
+  const handleMouseLeave = () => {
+    pointerX.set(0);
+    pointerY.set(0);
+  };
+
+  const faqItems = [
+    {
+      question: "How quickly can I start a premium campaign?",
+      answer: "Most clients begin with a kickoff in under 7 days and a polished launch-ready package within 2 weeks.",
+    },
+    {
+      question: "Can I combine creators, web and print in one project?",
+      answer: "Yes. Our platform supports blended programs across digital content, branding, and premium print services.",
+    },
+    {
+      question: "Are revisions included?",
+      answer: "Every premium package includes review rounds, approval checkpoints, and quality control before final delivery.",
+    },
+  ];
+
   return (
-    <main className="min-h-screen bg-[#050505] text-white">
+    <main className="min-h-screen bg-[#04050C] text-white">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.18),transparent_28%),radial-gradient(circle_at_bottom_right,rgba(56,189,248,0.12),transparent_20%)]" />
       <HybridNavbar />
 
-      <section className="relative overflow-hidden border-b border-white/10">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,rgba(124,255,91,0.16),transparent_32%),radial-gradient(circle_at_85%_10%,rgba(255,255,255,0.08),transparent_28%)]" />
-        <div className="mx-auto max-w-7xl px-4 pb-24 pt-24 sm:px-6 lg:px-8">
-          <p className="inline-flex rounded-full border border-[#7CFF5B]/35 bg-[#7CFF5B]/10 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.22em] text-[#7CFF5B]">
-            {tx("hybridBadge", "Hybrid Growth Platform")}
-          </p>
-          <div className="mt-10 grid gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:items-end">
-            <div className="max-w-2xl">
-              <h1 className="text-4xl font-black leading-[1.02] tracking-[-0.03em] sm:text-6xl lg:text-7xl">
-                {tx("hybridHeroTitle", "One platform for business growth: creators, digital services, and print production in one workflow.")}
-              </h1>
-              <p className="mt-6 max-w-3xl text-base leading-relaxed text-zinc-300 sm:text-lg">
-                {tx("hybridHeroSub", "Launch campaigns faster with a model that combines a creator marketplace, digital agency execution, and a streamlined project system.")}
-              </p>
-              <div className="mt-10 flex flex-wrap gap-3">
-                <HoverGlow glowColor="rgba(124, 255, 91, 0.4)">
-                  <Link
-                    to="/start-project"
-                    className="inline-block rounded-full bg-[#7CFF5B] px-7 py-3 text-sm font-black text-[#061207] shadow-[0_12px_40px_rgba(124,255,91,0.24)] transition-all duration-300 hover:shadow-[0_16px_50px_rgba(124,255,91,0.4)]"
-                  >
-                    {tx("startProject", "Start a project")}
-                  </Link>
-                </HoverGlow>
-                <HoverGlow glowColor="rgba(255, 255, 255, 0.1)">
-                  <Link
-                    to="/marketplace"
-                    className="inline-block rounded-full border border-white/20 bg-white/[0.02] px-7 py-3 text-sm font-semibold text-white transition-all duration-300 hover:bg-white/[0.08] hover:border-white/40 hover:shadow-[0_0_20px_rgba(255,255,255,0.1)]"
-                  >
-                    {tx("browseCreators", "Browse creators")}
-                  </Link>
-                </HoverGlow>
-                <HoverGlow glowColor="rgba(139, 92, 246, 0.3)">
-                  <button
-                    onClick={() => setShowRegistrationForm(true)}
-                    className="rounded-full border border-purple-500/50 bg-gradient-to-r from-purple-600/20 to-purple-800/20 px-7 py-3 text-sm font-semibold text-purple-300 transition-all duration-300 hover:from-purple-600/30 hover:to-purple-800/30 hover:border-purple-400/70 hover:text-purple-200"
-                  >
-                    Join as Client
-                  </button>
-                </HoverGlow>
+      {/* Hologram Hero Section */}
+      <HologramScene />
+
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+        <div className="grid gap-6 lg:grid-cols-3 lg:items-center">
+          <div className="space-y-4">
+            <p className="text-xs uppercase tracking-[0.24em] text-[#7CFF5B]">Why choose us</p>
+            <h2 className="text-3xl font-black tracking-tight text-white sm:text-4xl">Built for fast, polished campaigns that outperform.</h2>
+            <p className="max-w-xl text-base leading-8 text-zinc-400">A premium service layer, creator coordination, and modern delivery tools designed to move brands forward.</p>
+          </div>
+          <div className="space-y-4 rounded-[2rem] border border-white/10 bg-white/5 p-6 shadow-[0_30px_80px_rgba(0,0,0,0.18)]">
+            {[
+              "Strategic creative planning",
+              "Designer-led branding and motion",
+              "One platform for campaign visibility",
+            ].map((item) => (
+              <div key={item} className="rounded-3xl bg-[#06070f] p-4 text-sm text-zinc-300">{item}</div>
+            ))}
+          </div>
+          <div className="space-y-4 rounded-[2rem] border border-white/10 bg-white/5 p-6 shadow-[0_30px_80px_rgba(0,0,0,0.18)]">
+            {[
+              "Dedicated creative support",
+              "Quality reviews at every milestone",
+              "Flexible revision rounds",
+            ].map((item) => (
+              <div key={item} className="rounded-3xl bg-[#06070f] p-4 text-sm text-zinc-300">{item}</div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+        <div className="grid gap-10 lg:grid-cols-[0.98fr_1.02fr] lg:items-end">
+          <div className="space-y-6">
+            <p className="text-xs uppercase tracking-[0.24em] text-[#7CFF5B]">Overview</p>
+            <h2 className="text-3xl font-black tracking-tight text-white sm:text-4xl">A premium digital service experience for fast-growing brands.</h2>
+            <p className="max-w-xl text-base leading-8 text-zinc-400">We bring creators, storytelling, and campaign execution into one premium workflow with clarity, speed, and measurable results.</p>
+          </div>
+          <div className="grid gap-5 sm:grid-cols-2">
+            {[
+              { title: "Studio-level creative", description: "Professional content and motion designed for high-performance channels." },
+              { title: "Performance-first delivery", description: "Fast briefs, clear approvals, and review-ready assets every step of the way." },
+              { title: "Flexible scaling", description: "Move from one launch to a full creative system with ease." },
+              { title: "Transparent operations", description: "Project timelines, budgets and quality controls visible in real time." },
+            ].map((item) => (
+              <div key={item.title} className="rounded-[2rem] border border-white/10 bg-white/5 p-6 text-zinc-300 shadow-[0_30px_90px_rgba(0,0,0,0.18)]">
+                <p className="text-sm uppercase tracking-[0.24em] text-[#c2c2ea]">{item.title}</p>
+                <p className="mt-4 text-sm leading-7">{item.description}</p>
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+        <h2 className="text-3xl font-black tracking-tight text-white">What we offer</h2>
+        <p className="mt-3 max-w-2xl text-sm text-zinc-400">Curated creative services built for premium brands and high-impact campaigns.</p>
+        <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+          {[
+            { title: "UGC Creation", description: "Authentic video content with creator-led storytelling." },
+            { title: "Brand Design", description: "Identity, motion, and visual systems that feel premium." },
+            { title: "Video Production", description: "Ads, reels, and launch content with cinematic polish." },
+            { title: "Social Strategy", description: "Performance-minded planning and channel orchestration." },
+            { title: "Print & Packaging", description: "Tactile, branded print that supports premium campaigns." },
+            { title: "Web Experiences", description: "Conversion-first digital landing pages and product showcases." },
+          ].map((item) => (
+            <HoverGlow key={item.title} glowColor="rgba(124, 255, 91, 0.18)" className="group">
+              <div className="rounded-[2rem] border border-white/10 bg-[#08090f]/95 p-7 transition duration-300 hover:-translate-y-1 hover:border-[#7CFF5B]/30">
+                <p className="text-sm uppercase tracking-[0.24em] text-[#7CFF5B]">Service</p>
+                <h3 className="mt-4 text-xl font-semibold text-white">{item.title}</h3>
+                <p className="mt-3 text-sm leading-7 text-zinc-400">{item.description}</p>
+              </div>
+            </HoverGlow>
+          ))}
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+        <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+          <div>
+            <p className="text-xs uppercase tracking-[0.24em] text-[#7CFF5B]">Creator focus</p>
+            <h2 className="text-3xl font-black tracking-tight text-white sm:text-4xl">Featured creators and campaign specialists.</h2>
+          </div>
+          <Link to="/services" className="text-sm font-semibold text-[#7CFF5B]">Explore services</Link>
+        </div>
+        <div className="mt-8 grid gap-5 md:grid-cols-3">
+          {creatorHighlights.map((creator) => (
+            <motion.article
+              key={creator.name}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.6 }}
+              className="rounded-[2rem] border border-white/10 bg-white/5 p-6 shadow-[0_30px_90px_rgba(0,0,0,0.18)]"
+            >
+              <p className="text-lg font-semibold text-white">{creator.name}</p>
+              <p className="mt-1 text-sm text-zinc-400">{creator.niche}</p>
+              <div className="mt-6 flex items-center justify-between text-sm text-zinc-300">
+                <span>Rating {creator.rating}</span>
+                <span>{creator.startingAt}</span>
+              </div>
+            </motion.article>
+          ))}
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+        <div className="rounded-[2.5rem] border border-white/10 bg-white/5 p-8 shadow-[0_40px_120px_rgba(0,0,0,0.18)]">
+          <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+            <div>
+              <p className="text-xs uppercase tracking-[0.24em] text-[#7CFF5B]">Trusted by brands</p>
+              <h2 className="mt-3 text-3xl font-black tracking-tight text-white sm:text-4xl">Modern teams trust us for premium campaigns.</h2>
+              <p className="mt-4 max-w-xl text-sm leading-7 text-zinc-400">From product launches to seasonal activations, our premium workflow is built to keep delivery fast, polished, and on brand.</p>
             </div>
-
-            <div className="relative">
-              <div className="hero-scene">
-                <div className="scene-canvas">
-                  <div className="scene-orbit" aria-hidden="true">
-                    <div className="scene-item scene-laptop" style={{ transform: "translate3d(0,-4rem,0) rotateX(14deg) rotateY(-6deg)" }}>
-                      <div className="scene-laptop-screen">
-                        <div className="scene-screen-top">
-                          <span className="scene-dot scene-dot--green" />
-                          <span className="scene-dot scene-dot--yellow" />
-                          <span className="scene-dot scene-dot--red" />
-                        </div>
-                        <div className="scene-screen-content">
-                          <div className="scene-bar" />
-                          <div className="scene-panel" />
-                          <div className="scene-row">
-                            <div className="scene-chip scene-chip--accent" />
-                            <div className="scene-chip scene-chip--muted" />
-                          </div>
-                          <div className="scene-row scene-row--dense">
-                            <div className="scene-block" />
-                            <div className="scene-block scene-block--short" />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="scene-item scene-camera" style={{ transform: "translate3d(10rem,-3rem,0) rotateX(28deg) rotateY(20deg)" }}>
-                      <div className="scene-camera-lens" />
-                      <div className="scene-camera-strip" />
-                    </div>
-
-                    <div className="scene-item scene-box" style={{ transform: "translate3d(-9rem,3.5rem,0) rotateX(12deg) rotateY(-24deg)" }}>
-                      <div className="scene-box-edge" />
-                      <div className="scene-box-label">PRINT</div>
-                    </div>
-
-                    <div className="scene-item scene-frame" style={{ transform: "translate3d(5rem,4rem,0) rotateX(8deg) rotateY(12deg)" }}>
-                      <div className="scene-frame-screen">
-                        <div className="scene-frame-play" />
-                        <div className="scene-frame-tags">
-                          <span>UGC</span>
-                          <span>Studio</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="scene-glow" />
+            <div className="grid gap-4 sm:grid-cols-3">
+              {[
+                "Growth", "Lifestyle", "Retail"
+              ].map((label) => (
+                <div key={label} className="rounded-3xl bg-[#06070f] p-5 text-sm text-zinc-300 shadow-[0_20px_60px_rgba(0,0,0,0.12)]">
+                  <p className="font-semibold text-white">{label}</p>
+                  <p className="mt-2 text-xs text-zinc-400">Premium campaign partner</p>
                 </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
       <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-        <h2 className="text-3xl font-black tracking-tight">{tx("servicesOverview", "Services Overview")}</h2>
-        <p className="mt-3 max-w-2xl text-sm text-zinc-400">{tx("servicesOverviewSub", "Everything you need to market, build, and deliver your brand experience from one team.")}</p>
-        <div className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
-          {["UGC", "Photography", "Web", "Print"].map((item) => (
-            <button
-              key={item}
-              type="button"
-              onClick={() => navigate(`/services?service=${encodeURIComponent(item)}`)}
-              className="rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.08] to-white/[0.03] p-6 text-left shadow-[0_10px_35px_rgba(0,0,0,0.25)] transition hover:-translate-y-1 hover:border-[#7CFF5B]/40"
-            >
-              <p className="text-lg font-bold tracking-tight">{item}</p>
-              <p className="mt-3 text-sm leading-relaxed text-zinc-300">{tx("executionReady", "Execution-ready delivery focused on conversion, speed, and measurable outcomes.")}</p>
-              <span className="mt-4 inline-flex text-xs font-semibold text-[#7CFF5B]">
-                {tx("exploreServices", "Explore services")} →
-              </span>
-            </button>
-          ))}
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-        <h2 className="text-3xl font-black tracking-tight">{tx("howItWorks", "How It Works")}</h2>
-        <div className="mt-8 grid gap-5 md:grid-cols-3">
-          {[
-            tx("step1", "Choose a service, creator, or package"),
-            tx("step2", "Share your brief, files, and goals"),
-            tx("step3", "Get managed delivery with clear tracking"),
-          ].map((step, index) => (
-            <div key={step} className="rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.07] to-white/[0.02] p-6">
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#7CFF5B]">Step {index + 1}</p>
-              <p className="mt-3 text-lg font-semibold tracking-tight">{step}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between">
-          <h2 className="text-3xl font-black tracking-tight">{tx("featuredCreators", "Featured Creators")}</h2>
-          <Link to="/marketplace" className="text-sm font-semibold text-[#7CFF5B]">{tx("viewMarketplace", "View marketplace")}</Link>
-        </div>
-        <div className="mt-8 grid gap-5 md:grid-cols-3">
-          {creatorHighlights.map((creator) => (
-            <article key={creator.name} className="rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.09] to-white/[0.03] p-6 transition duration-300 hover:-translate-y-1 hover:border-[#7CFF5B]/40">
-              <p className="text-lg font-bold tracking-tight">{creator.name}</p>
-              <p className="mt-1 text-sm text-zinc-300">{creator.niche}</p>
-              <div className="mt-6 flex items-center justify-between text-sm">
-                <span className="text-zinc-300">Rating {creator.rating}</span>
-                <span className="font-bold">{creator.startingAt}</span>
-              </div>
+        <h2 className="text-3xl font-black tracking-tight text-white">Pricing packages</h2>
+        <p className="mt-3 max-w-2xl text-sm text-zinc-400">Choose the premium package that matches your launch goals.</p>
+        <div className="mt-10 grid gap-5 md:grid-cols-3">
+          {packageItems.map((pack) => (
+            <div key={pack.id} className="rounded-[2rem] border border-white/10 bg-[#08090f]/95 p-7 shadow-[0_30px_90px_rgba(0,0,0,0.18)]">
+              <p className="text-sm uppercase tracking-[0.24em] text-[#7CFF5B]">{pack.name}</p>
+              <p className="mt-4 text-4xl font-black text-white">{pack.price}</p>
+              <ul className="mt-6 space-y-3 text-sm text-zinc-400">
+                {pack.features.slice(0, 3).map((feature) => (
+                  <li key={feature} className="leading-7">{feature}</li>
+                ))}
+              </ul>
               <button
                 type="button"
-                onClick={() => navigate(`/marketplace?creator=${encodeURIComponent(creator.name)}`)}
-                className="mt-5 rounded-full border border-white/20 px-4 py-2 text-xs font-semibold text-white transition hover:border-[#7CFF5B]/40 hover:text-[#7CFF5B]"
+                onClick={() => navigate("/start-project")}
+                className="mt-8 inline-flex w-full items-center justify-center rounded-full bg-[#7CFF5B] px-5 py-3 text-sm font-semibold text-[#061207] transition hover:bg-[#95ff81]"
               >
-                {tx("browseCreators", "Browse creators")} →
+                Get started
               </button>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between">
-          <h2 className="text-3xl font-black tracking-tight">{tx("pricingPackages", "Pricing Packages")}</h2>
-          <Link to="/packages" className="text-sm font-semibold text-[#7CFF5B]">{tx("seePricing", "See pricing")}</Link>
-        </div>
-        <div className="mt-8 grid gap-5 md:grid-cols-3">
-          {packageItems.map((pack) => (
-            <div key={pack.name} className="rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.09] to-white/[0.03] p-6">
-              <p className="text-lg font-bold tracking-tight">{pack.name}</p>
-              <p className="mt-2 text-4xl font-black tracking-tight">{pack.price}</p>
-              <ul className="mt-5 space-y-2 text-sm text-zinc-300">
-                {pack.features.slice(0, 3).map((feature) => <li key={feature}>- {feature}</li>)}
-              </ul>
-              <Link to="/start-project" className="mt-6 inline-flex rounded-full border border-[#7CFF5B]/40 px-5 py-2 text-sm font-semibold text-[#7CFF5B] transition hover:bg-[#7CFF5B]/10">
-                {tx("choosePackage", "Choose package")}
-              </Link>
             </div>
           ))}
         </div>
       </section>
 
       <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-        <h2 className="text-3xl font-black tracking-tight">{tx("trustedTeams", "Trusted by fast-moving teams")}</h2>
-        <div className="mt-8 grid gap-5 md:grid-cols-2">
-          <blockquote className="rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.08] to-white/[0.03] p-6 text-zinc-300">
-            {`"${tx("testimonial1", "We replaced three vendors with one platform and cut campaign launch time by half.")}"`}
-          </blockquote>
-          <blockquote className="rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.08] to-white/[0.03] p-6 text-zinc-300">
-            {`"${tx("testimonial2", "The done-for-you workflow feels like having an in-house growth team on demand.")}"`}
-          </blockquote>
+        <div className="grid gap-8 lg:grid-cols-3">
+          {[
+            { label: "Launch speed", detail: "+42% faster delivery" },
+            { label: "Creative depth", detail: "Studio-grade assets" },
+            { label: "Performance", detail: "Built for measurable growth" },
+          ].map((item) => (
+            <div key={item.label} className="rounded-[2rem] border border-white/10 bg-white/5 p-7 shadow-[0_30px_80px_rgba(0,0,0,0.18)]">
+              <p className="text-sm uppercase tracking-[0.24em] text-[#7CFF5B]">{item.label}</p>
+              <p className="mt-4 text-2xl font-semibold text-white">{item.detail}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+        <div className="rounded-[3rem] border border-white/10 bg-[#07080f]/90 p-10 shadow-[0_40px_120px_rgba(0,0,0,0.22)] backdrop-blur-2xl">
+          <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
+            <div>
+              <p className="text-xs uppercase tracking-[0.24em] text-[#7CFF5B]">FAQ</p>
+              <h2 className="mt-3 text-3xl font-black tracking-tight text-white sm:text-4xl">Common questions for premium clients.</h2>
+              <p className="mt-4 max-w-xl text-sm leading-7 text-zinc-400">Everything you need to know before launching your first project.</p>
+            </div>
+            <div className="space-y-4">
+              {faqItems.map((item, index) => (
+                <div key={item.question} className="rounded-[2rem] border border-white/10 bg-white/5 p-6">
+                  <button
+                    type="button"
+                    onClick={() => setActiveFaq(activeFaq === index ? -1 : index)}
+                    className="flex w-full items-center justify-between text-left text-white"
+                  >
+                    <span className="text-base font-semibold">{item.question}</span>
+                    <span className="text-2xl text-[#7CFF5B]">{activeFaq === index ? "−" : "+"}</span>
+                  </button>
+                  {activeFaq === index && (
+                    <p className="mt-4 text-sm leading-7 text-zinc-300">{item.answer}</p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
       <section className="mx-auto max-w-7xl px-4 pb-24 pt-8 sm:px-6 lg:px-8">
-        <div className="rounded-3xl border border-[#7CFF5B]/30 bg-gradient-to-br from-[#7CFF5B]/15 via-[#7CFF5B]/10 to-transparent p-8 sm:p-12">
-          <h3 className="max-w-3xl text-3xl font-black tracking-tight text-white sm:text-4xl">{tx("finalCtaTitle", "Ready to scale your brand with one growth partner?")}</h3>
-          <p className="mt-4 max-w-2xl text-sm text-zinc-300">{tx("finalCtaSub", "Start a project once and manage creators, agency services, and printing in a single platform experience.")}</p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Link to="/start-project" className="rounded-full bg-[#7CFF5B] px-7 py-3 text-sm font-black text-[#061207]">
-              {tx("startProject", "Start a project")}
-            </Link>
-            <Link to="/services" className="rounded-full border border-white/20 bg-white/[0.02] px-7 py-3 text-sm font-semibold text-white">
-              {tx("exploreServices", "Explore services")}
-            </Link>
+        <div className="rounded-[3rem] bg-gradient-to-br from-[#7CFF5B]/20 via-[#38bdf8]/10 to-[#0f172a]/95 p-10 shadow-[0_40px_120px_rgba(0,0,0,0.32)] backdrop-blur-2xl">
+          <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
+            <div>
+              <p className="text-xs uppercase tracking-[0.24em] text-[#7CFF5B]">Ready for premium</p>
+              <h2 className="mt-3 text-4xl font-black tracking-tight text-white sm:text-5xl">Book a launch or talk to our growth team today.</h2>
+              <p className="mt-4 max-w-xl text-sm leading-7 text-zinc-300">Create, launch and scale with a premium workflow built for ambitious brands and creative leaders.</p>
+            </div>
+            <div className="flex flex-wrap gap-4">
+              <Link
+                to="/start-project"
+                className="inline-flex min-w-[170px] items-center justify-center rounded-full bg-white px-6 py-4 text-sm font-semibold text-[#04070f] shadow-[0_20px_60px_rgba(255,255,255,0.16)] transition hover:-translate-y-0.5"
+              >
+                Start a project
+              </Link>
+              <Link
+                to="/services"
+                className="inline-flex min-w-[170px] items-center justify-center rounded-full border border-white/20 bg-white/5 px-6 py-4 text-sm font-semibold text-white transition hover:bg-white/10"
+              >
+                View services
+              </Link>
+            </div>
           </div>
         </div>
       </section>
-
-      {/* Client Registration Modal */}
-      {showRegistrationForm && (
-        <ClientRegistrationForm
-          onSubmit={(client) => {
-            console.log("Client registered:", client);
-            // You can add additional logic here, like showing a success message
-          }}
-          onClose={() => setShowRegistrationForm(false)}
-        />
-      )}
     </main>
   );
 }
+  
