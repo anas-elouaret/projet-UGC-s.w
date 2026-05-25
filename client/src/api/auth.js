@@ -1,11 +1,5 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-
 const request = async (path, options = {}) => {
-  if (!API_BASE_URL) {
-    throw new Error("VITE_API_BASE_URL is missing in client environment");
-  }
-
-  const response = await fetch(`${API_BASE_URL}${path}`, {
+  const response = await fetch(path, {
     headers: {
       "Content-Type": "application/json",
       ...(options.headers || {}),

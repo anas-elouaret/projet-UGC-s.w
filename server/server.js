@@ -11,7 +11,9 @@ const jwtSecret = process.env.JWT_SECRET;
 
 app.use(express.json());
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", clientUrl);
+  if (clientUrl) {
+    res.header("Access-Control-Allow-Origin", clientUrl);
+  }
   res.header(
     "Access-Control-Allow-Methods",
     "GET,POST,PUT,PATCH,DELETE,OPTIONS",
