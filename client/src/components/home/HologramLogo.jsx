@@ -4,6 +4,7 @@ import { Text3D, OrbitControls, Sphere, Ring, Points, PointMaterial, useTexture 
 import { EffectComposer, Bloom, ChromaticAberration } from '@react-three/postprocessing';
 import { BlendFunction } from 'postprocessing';
 import * as THREE from 'three';
+import helvetikerBoldFont from 'three/examples/fonts/helvetiker_bold.typeface.json?url';
 import { motion } from 'framer-motion';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -241,7 +242,7 @@ const GrowstackLogo = () => {
     >
       {/* GROW Text */}
       <Text3D
-        font="/fonts/helvetiker_bold.typeface.json"
+        font={helvetikerBoldFont}
         size={0.8}
         height={0.2}
         curveSegments={12}
@@ -258,7 +259,7 @@ const GrowstackLogo = () => {
 
       {/* STACK Text */}
       <Text3D
-        font="/fonts/helvetiker_bold.typeface.json"
+        font={helvetikerBoldFont}
         size={0.8}
         height={0.2}
         curveSegments={12}
